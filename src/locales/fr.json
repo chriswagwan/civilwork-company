@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "projects": "Projets",
+    "about": "À Propos",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero_eyebrow": "Excellence en Infrastructures Civiles",
+    "hero_title": "Nous construisons des routes, des structures et des réseaux de services qui gardent les communautés en mouvement.",
+    "hero_copy": "Civil Works Co. s'associe à des clients publics et privés pour fournir une construction fiable, une gestion de projet disciplinée et des résultats d'ingénierie durables.",
+    "explore_projects": "Explorez les Projets",
+    "request_consultation": "Demander une Consultation",
+    "years_practice": "Années de pratique",
+    "projects_delivered": "Projets livrés",
+    "safety_teams": "Équipes de sécurité",
+    "why_choose": "Pourquoi Nous Choisir",
+    "why_copy": "Livraison structurée de la mobilisation à la remise",
+    "point1": "Planification intégrée, approvisionnement et exécution sur site",
+    "point2": "Rapports transparents et livraison basée sur les jalons",
+    "point3": "Travail de haute qualité avec des contrôles HSE solides",
+    "what_we_do": "Ce Que Nous Faisons",
+    "what_we_do_title": "Services de travaux civils bâtis autour de la performance sur site",
+    "what_we_do_copy": "Des terrassements et constructions routières à la livraison de bâtiments en béton armé et aux paquets de drainage, nos équipes sont prêtes pour une exécution sûre et de haute qualité."
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Capacités spécialisées en travaux civils pour les transports, les bâtiments et les services publics.",
+    "copy": "Nos gammes de services sont structurées pour soutenir à la fois les tâches autonomes et la livraison de projets intégrés.",
+    "explore_scope": "Explorer la Portée"
+  },
+  "projects": {
+    "eyebrow": "Portefeuille de Projets",
+    "title": "Un portefeuille qui s'étend aux transports, aux travaux structuraux et aux infrastructures de services.",
+    "copy": "Explorez les projets sélectionnés qui démontrent notre capacité à travers la planification, la livraison active et les projets réalisés.",
+    "view_more": "Voir Plus"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Commencez la conversation sur votre prochain projet de travaux civils.",
+    "name": "Nom",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "subject": "Sujet",
+    "project_details": "Détails du Projet",
+    "send_message": "Envoyer le Message",
+    "sending": "Envoi en cours...",
+    "contact_phone": "Téléphone",
+    "contact_email": "E-mail",
+    "contact_location": "Localisation",
+    "contact_hours": "Heures"
+  },
+  "about": {
+    "eyebrow": "À Propos",
+    "title": "Une équipe de travaux civils construite sur la discipline d'ingénierie et la livraison fiable.",
+    "copy": "Civil Works Co. réunit des chefs de projet, des ingénieurs, des superviseurs et des équipes spécialisées axés sur l'exécution sûre et la valeur client mesurable.",
+    "story": "Notre Histoire",
+    "story_title": "De la mobilisation sur site à la remise finale, nous restons près du travail.",
+    "story_copy": "Nous avons commencé avec une conviction claire : les projets d'infrastructure réussissent quand la planification technique, l'exécution sur le terrain et la communication restent étroitement connectées.",
+    "company_expansion_p1": "Au fil des années, notre entreprise s'est étendue de paquets de travaux civils ciblés à la livraison intégrée dans la construction de routes, les bâtiments en béton armé, les réseaux de drainage et l'aménagement de sites. Nous associons une direction de site expérimentée à des rapports modernes et des contrôles de projet afin que les clients comprennent toujours où le projet en est et ce qui vient ensuite.",
+    "company_expansion_p2": "Cette approche pratique et ancrée dans la réalité continue de guider chaque commanditaire que nous acceptons, qu'il s'agisse d'une mise à niveau d'un corridor de travaux publics, d'une installation industrielle privée ou d'un programme d'amélioration du drainage.",
+    "mission_title": "Mission",
+    "mission_copy": "Livrer des projets de travaux civils fiables avec une exécution disciplinée, une communication transparente et une qualité d'ingénierie durable.",
+    "vision_title": "Vision",
+    "vision_copy": "Devenir le partenaire régional préféré pour les infrastructures de transport, structurales et de services qui améliorent la vie quotidienne.",
+    "commitment_title": "Engagement",
+    "commitment_copy": "Protéger les personnes, les calendriers et les résultats des clients par une planification solide, une culture HSE et des équipes de livraison responsables.",
+    "leadership": "Notre Leadership",
+    "leadership_title": "Rencontrez l'équipe qui alimente notre vision",
+    "leadership_copy": "Professionnels expérimentés dédiés à l'excellence en infrastructures civiles."
+  },
+  "footer": {
+    "company": "Civil Works Co.",
+    "copy": "Construire une infrastructure qui dure."
+  }
+}

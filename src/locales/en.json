@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero_eyebrow": "Civil Infrastructure Excellence",
+    "hero_title": "We build roads, structures, and utility networks that keep communities moving.",
+    "hero_copy": "Civil Works Co. partners with public and private clients to deliver dependable construction, disciplined project management, and durable engineering outcomes.",
+    "explore_projects": "Explore Projects",
+    "request_consultation": "Request Consultation",
+    "years_practice": "Years of practice",
+    "projects_delivered": "Projects delivered",
+    "safety_teams": "Safety-first teams",
+    "why_choose": "Why Clients Choose Us",
+    "why_copy": "Structured delivery from mobilization to handover",
+    "point1": "Integrated planning, procurement, and site execution",
+    "point2": "Transparent reporting and milestone-based delivery",
+    "point3": "High-quality workmanship with strong HSE controls",
+    "what_we_do": "What We Do",
+    "what_we_do_title": "Civil works services built around performance on site",
+    "what_we_do_copy": "From earthworks and road construction to structural building delivery and drainage packages, our teams are set up for safe, high-quality execution."
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "Specialized civil works capabilities for transport, buildings, and utilities.",
+    "copy": "Our service lines are structured to support both standalone scopes and integrated project delivery.",
+    "explore_scope": "Explore Scope"
+  },
+  "projects": {
+    "eyebrow": "Project Portfolio",
+    "title": "A portfolio that spans transportation, structural works, and utility infrastructure.",
+    "copy": "Explore selected projects that demonstrate our capability across planning, active delivery, and completed assignments.",
+    "view_more": "View More"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Start the conversation about your next civil works project.",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "subject": "Subject",
+    "project_details": "Project Details",
+    "send_message": "Send Message",
+    "sending": "Sending...",
+    "contact_phone": "Phone",
+    "contact_email": "Email",
+    "contact_location": "Location",
+    "contact_hours": "Hours"
+  },
+  "about": {
+    "eyebrow": "About Us",
+    "title": "A civil works team built on engineering discipline and dependable delivery.",
+    "copy": "Civil Works Co. brings together project managers, engineers, supervisors, and specialized crews focused on safe execution and measurable client value.",
+    "story": "Our Story",
+    "story_title": "From site mobilization to final handover, we stay close to the work.",
+    "story_copy": "We started with a clear belief: infrastructure projects succeed when technical planning, field execution, and communication stay tightly connected.",
+    "company_expansion_p1": "Over the years, our company has expanded from targeted civil packages into integrated delivery across road construction, reinforced concrete buildings, drainage networks, and site development. We combine experienced site leadership with modern reporting and project controls so clients always understand where the project stands and what comes next.",
+    "company_expansion_p2": "That practical, grounded approach continues to guide every commission we take on, whether the assignment is a public works corridor upgrade, a private industrial facility, or a drainage improvement program.",
+    "mission_title": "Mission",
+    "mission_copy": "Deliver reliable civil works projects with disciplined execution, transparent communication, and durable engineering quality.",
+    "vision_title": "Vision",
+    "vision_copy": "Become the preferred regional partner for transport, structural, and utility infrastructure that improves daily life.",
+    "commitment_title": "Commitment",
+    "commitment_copy": "Protect people, schedules, and client outcomes through strong planning, HSE culture, and accountable delivery teams.",
+    "leadership": "Our Leadership",
+    "leadership_title": "Meet the team driving our vision",
+    "leadership_copy": "Experienced professionals dedicated to delivering excellence in civil infrastructure."
+  },
+  "footer": {
+    "company": "Civil Works Co.",
+    "copy": "Building infrastructure that lasts."
+  }
+}
