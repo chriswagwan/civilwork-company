@@ -61,9 +61,7 @@ const LoginPage = () => {
         <div className="bg-white dark:bg-slate-800 shadow-2xl rounded-3xl px-6 py-10 sm:px-8 sm:py-12 border border-slate-100 dark:border-slate-700">
           {/* Logo / Header */}
           <div className="flex flex-col items-center mb-8">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 text-white font-bold text-xl mb-4 shadow-lg dark:from-slate-600 dark:to-slate-800">
-              CW
-            </div>
+            <img src="/icon.png" alt="Logo" className="h-14 w-14 rounded-2xl object-contain mb-4 shadow-lg" />
             <h1 className="text-3xl font-bold text-slate-950 dark:text-white text-center">Admin Login</h1>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 text-center">Access the operations console</p>
           </div>

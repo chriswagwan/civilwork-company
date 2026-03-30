@@ -63,10 +63,10 @@ const AboutPage = () => {
           />
         </div>
         <div className="card-panel px-4 sm:px-6 py-6 sm:py-8 md:px-8">
-          <p className="text-xs sm:text-sm md:text-base leading-6 sm:leading-7 md:leading-8 text-slate-600">
+          <p className="text-xs sm:text-sm md:text-base leading-6 sm:leading-7 md:leading-8 text-slate-600 dark:text-slate-400">
             {t(language, 'about.company_expansion_p1')}
           </p>
-          <p className="mt-4 sm:mt-5 text-xs sm:text-sm md:text-base leading-6 sm:leading-7 md:leading-8 text-slate-600">
+          <p className="mt-4 sm:mt-5 text-xs sm:text-sm md:text-base leading-6 sm:leading-7 md:leading-8 text-slate-600 dark:text-slate-400">
             {t(language, 'about.company_expansion_p2')}
           </p>
         </div>
@@ -76,11 +76,11 @@ const AboutPage = () => {
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {values.map(({ icon, title, copy }) => (
             <article key={title} className="card-panel px-4 sm:px-6 py-6 sm:py-8">
-              <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700">
+              <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-500">
                 {icon}
               </div>
-              <h3 className="mt-4 sm:mt-5 text-lg sm:text-2xl font-semibold text-slate-900">{title}</h3>
-              <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-6 sm:leading-7 text-slate-600">{copy}</p>
+              <h3 className="mt-4 sm:mt-5 text-lg sm:text-2xl font-semibold text-slate-900 dark:text-white">{title}</h3>
+              <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-6 sm:leading-7 text-slate-600 dark:text-slate-400">{copy}</p>
             </article>
           ))}
         </div>
@@ -102,24 +102,24 @@ const AboutPage = () => {
             <LoadingSpinner label="Loading staff..." />
           </div>
         ) : staff.length === 0 ? (
-          <div className="card-panel rounded-2xl border border-slate-200 px-4 sm:px-6 py-6 sm:py-8 text-center">
-            <p className="text-xs sm:text-sm text-slate-500">No staff members added yet.</p>
+          <div className="card-panel rounded-2xl border border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-6 sm:py-8 text-center">
+            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-500">No staff members added yet.</p>
           </div>
         ) : (
           <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {staff.map((member) => (
               <article key={member._id} className="card-panel overflow-hidden flex flex-col relative group">
-                <div className="h-32 sm:h-40 lg:h-48 w-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center flex-shrink-0">
+                <div className="h-32 sm:h-40 lg:h-48 w-full bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 flex items-center justify-center flex-shrink-0">
                   {member.photo ? (
-                    <img src={member.photo} alt={member.name} className="h-full w-full object-cover" />
+                    <img src={member.photo} alt={member.name} className="h-full w-full object-cover object-top" />
                   ) : (
-                    <User size={40} className="text-slate-400" />
+                    <User size={40} className="text-slate-400 dark:text-slate-600" />
                   )}
                 </div>
                 <div className="px-4 sm:px-6 py-4 sm:py-5 flex-grow flex flex-col">
-                  <h3 className="text-base sm:text-lg font-semibold text-slate-950 line-clamp-2">{member.name}</h3>
-                  <p className="text-xs sm:text-sm font-medium text-amber-700 mt-1">{member.title}</p>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-5 sm:leading-6 mt-2 sm:mt-3 line-clamp-3">{member.description}</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-slate-950 dark:text-white line-clamp-2">{member.name}</h3>
+                  <p className="text-xs sm:text-sm font-medium text-amber-700 dark:text-amber-600 mt-1">{member.title}</p>
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-5 sm:leading-6 mt-2 sm:mt-3 line-clamp-3">{member.description}</p>
                 </div>
               </article>
             ))}

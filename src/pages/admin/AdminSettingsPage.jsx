@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { CheckCircle2, X, AlertCircle } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import LoadingSpinner from '../../components/common/LoadingSpinner.jsx'
 import { useSiteSettings } from '../../hooks/useSiteSettings.js'
 
@@ -8,6 +9,22 @@ const AdminSettingsPage = () => {
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState({ type: '', message: '' })
   const [showForm, setShowForm] = useState(false)
+  const [toastVisible, setToastVisible] = useState(false)
+  const feedbackTimer = useRef(null)
+
+  const showFeedback = (type, message) => {
+    clearTimeout(feedbackTimer.current)
+    setFeedback({ type, message })
+    setToastVisible(true)
+    feedbackTimer.current = setTimeout(() => {
+      setToastVisible(false)
+      setTimeout(() => setFeedback({ type: '', message: '' }), 300)
+    }, 4000)
+  }
+
+  useEffect(() => {
+    return () => clearTimeout(feedbackTimer.current)
+  }, [])
 
   useEffect(() => {
     setForm(settings)
@@ -34,13 +51,10 @@ const AdminSettingsPage = () => {
     try {
       await updateSettings(form)
       await refreshSettings()
-      setFeedback({ type: 'success', message: 'Website settings updated successfully.' })
+      showFeedback('success', 'Website settings updated successfully.')
       setShowForm(false)
     } catch (error) {
-      setFeedback({
-        type: 'error',
-        message: error.response?.data?.message || 'Unable to update company settings.',
-      })
+      showFeedback('error', error.response?.data?.message || 'Unable to update company settings.')
     } finally {
       setSaving(false)
     }
@@ -56,6 +70,32 @@ const AdminSettingsPage = () => {
 
   return (
     <div className="space-y-6 sm:space-y-8">
+      {/* Toast Notification */}
+      {feedback.message && (
+        <div className={`fixed top-6 right-6 z-50 transition-all duration-300 ease-in-out ${
+          toastVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        }`}>
+          <div className={`flex items-center gap-3 rounded-2xl px-4 sm:px-5 py-3 sm:py-4 shadow-lg text-xs sm:text-sm font-medium ${
+            feedback.type === 'success'
+              ? 'bg-emerald-600 text-white'
+              : 'bg-rose-600 text-white'
+          }`}>
+            {feedback.type === 'success' ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
+            <span>{feedback.message}</span>
+            <button
+              onClick={() => {
+                clearTimeout(feedbackTimer.current)
+                setToastVisible(false)
+                setTimeout(() => setFeedback({ type: '', message: '' }), 300)
+              }}
+              className="ml-2 rounded-full p-1 hover:bg-white/20 transition"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -180,16 +220,6 @@ const AdminSettingsPage = () => {
             className="w-full rounded-3xl border border-slate-200 px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-amber-500"
           />
         </label>
-
-        {feedback.message ? (
-          <div
-            className={`rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm ${
-              feedback.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'
-            }`}
-          >
-            {feedback.message}
-          </div>
-        ) : null}
 
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
           <button

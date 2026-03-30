@@ -5,13 +5,13 @@ import './index.css'
 import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { SiteSettingsProvider } from './context/SiteSettingsContext.jsx'
-import { ThemeProvider } from './context/ThemeContext.jsx'
 import { LanguageProvider } from './context/LanguageContext.jsx'
+import { PublicThemeProvider } from './context/PublicThemeContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
+      <PublicThemeProvider>
         <AuthProvider>
           <SiteSettingsProvider>
             <LanguageProvider>
@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')).render(
             </LanguageProvider>
           </SiteSettingsProvider>
         </AuthProvider>
-      </ThemeProvider>
+      </PublicThemeProvider>
     </BrowserRouter>
   </StrictMode>,
 )

@@ -69,12 +69,12 @@ const ContactPage = () => {
             { icon: <MapPin size={20} />, label: t(language, 'contact.contact_hours'), value: settings.officeHours },
           ].map(({ icon, label, value }) => (
             <div key={label} className="card-panel flex gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-6">
-              <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 flex-shrink-0">
+              <div className="service-icon flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 flex-shrink-0">
                 {icon}
               </div>
               <div className="min-w-0">
-                <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">{label}</p>
-                <p className="mt-1 sm:mt-2 text-base sm:text-lg font-semibold text-slate-950 break-words">{value}</p>
+                <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-500">{label}</p>
+                <p className="mt-1 sm:mt-2 text-base sm:text-lg font-semibold text-slate-950 dark:text-white break-words">{value}</p>
               </div>
             </div>
           ))}
@@ -83,24 +83,24 @@ const ContactPage = () => {
         <form onSubmit={handleSubmit} className="card-panel space-y-4 sm:space-y-5 px-4 py-6 sm:px-6 sm:py-8 md:px-8">
           <div className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2">
             <label className="space-y-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-700">{t(language, 'contact.name')}</span>
+              <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">{t(language, 'contact.name')}</span>
               <input
                 type="text"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500 dark:focus:border-amber-600"
                 required
               />
             </label>
             <label className="space-y-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-700">{t(language, 'contact.email')}</span>
+              <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">{t(language, 'contact.email')}</span>
               <input
                 type="email"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500 dark:focus:border-amber-600"
                 required
               />
             </label>
@@ -108,35 +108,35 @@ const ContactPage = () => {
 
           <div className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2">
             <label className="space-y-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-700">{t(language, 'contact.phone')}</span>
+              <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">{t(language, 'contact.phone')}</span>
               <input
                 type="text"
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500 dark:focus:border-amber-600"
               />
             </label>
             <label className="space-y-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-700">{t(language, 'contact.subject')}</span>
+              <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">{t(language, 'contact.subject')}</span>
               <input
                 type="text"
                 name="subject"
                 value={form.subject}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500 dark:focus:border-amber-600"
               />
             </label>
           </div>
 
           <label className="block space-y-2">
-            <span className="text-xs sm:text-sm font-medium text-slate-700">{t(language, 'contact.project_details')}</span>
+            <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">{t(language, 'contact.project_details')}</span>
             <textarea
               name="message"
               value={form.message}
               onChange={handleChange}
               rows="6"
-              className="w-full rounded-3xl border border-slate-200 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500"
+              className="w-full rounded-3xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 dark:text-white px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none transition focus:border-amber-500 dark:focus:border-amber-600"
               required
             />
           </label>
@@ -145,8 +145,8 @@ const ContactPage = () => {
             <div
               className={`rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm ${
                 feedback.type === 'success'
-                  ? 'bg-emerald-50 text-emerald-700'
-                  : 'bg-rose-50 text-rose-700'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300'
+                  : 'bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300'
               }`}
             >
               {feedback.message}
@@ -156,7 +156,7 @@ const ContactPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-slate-950 px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-slate-950 dark:bg-slate-700 px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-slate-800 dark:hover:bg-slate-600 disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading ? <LoadingSpinner label={t(language, 'contact.sending')} /> : t(language, 'contact.send_message')}
           </button>

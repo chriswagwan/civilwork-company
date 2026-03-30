@@ -1,10 +1,77 @@
-import { ArrowLeft } from 'lucide-react'
+import { ArrowRight, TrendingUp, Briefcase, MessageSquare, Users, Settings } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import client from '../../api/client.js'
 import LoadingSpinner from '../../components/common/LoadingSpinner.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import { formatDate, truncateText } from '../../utils/formatters.js'
+
+const AnimatedCounter = ({ target, label, icon: Icon, color = 'amber' }) => {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    let start = 0
+    const increment = target / 50
+    const timer = setInterval(() => {
+      start += increment
+      if (start >= target) {
+        setCount(target)
+        clearInterval(timer)
+      } else {
+        setCount(Math.floor(start))
+      }
+    }, 30)
+    return () => clearInterval(timer)
+  }, [target])
+
+  const colorMap = {
+    amber: {
+      bg: 'bg-gradient-to-br from-amber-500 to-orange-600',
+      text: 'text-amber-700',
+      bg50: 'bg-amber-50',
+    },
+    blue: {
+      bg: 'bg-gradient-to-br from-blue-500 to-indigo-600',
+      text: 'text-blue-700',
+      bg50: 'bg-blue-50',
+    },
+    emerald: {
+      bg: 'bg-gradient-to-br from-emerald-500 to-teal-600',
+      text: 'text-emerald-700',
+      bg50: 'bg-emerald-50',
+    },
+    purple: {
+      bg: 'bg-gradient-to-br from-purple-500 to-pink-600',
+      text: 'text-purple-700',
+      bg50: 'bg-purple-50',
+    },
+  }
+
+  const colorClass = colorMap[color] || colorMap.amber
+
+  return (
+    <div className={`group rounded-2xl border border-slate-200 bg-white hover:shadow-lg transition-all duration-300 p-6 flex flex-col hover:border-slate-300`}>
+      {/* Icon */}
+      <div className={`inline-flex w-fit rounded-xl ${colorClass.bg} p-3 text-white mb-4 shadow-md`}>
+        <Icon size={24} />
+      </div>
+
+      {/* Label */}
+      <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">{label}</p>
+
+      {/* Counter */}
+      <p className={`text-3xl sm:text-4xl font-bold text-slate-900 mb-2 transition-all duration-300 group-hover:scale-110`}>
+        {count}
+      </p>
+
+      {/* Trend indicator */}
+      <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600">
+        <TrendingUp size={14} />
+        <span>+12% vs last month</span>
+      </div>
+    </div>
+  )
+}
 
 const DashboardHomePage = () => {
   const [data, setData] = useState(null)
@@ -25,106 +92,163 @@ const DashboardHomePage = () => {
 
   if (loading) {
     return (
-      <div className="card-panel px-4 sm:px-6 py-10 sm:py-14">
+      <div className="rounded-2xl border border-slate-200 bg-white px-6 py-14">
         <LoadingSpinner label="Loading dashboard..." />
       </div>
     )
   }
 
-  const statCards = [
-    { label: 'Projects', value: data?.totals?.projects ?? 0 },
-    { label: 'Services', value: data?.totals?.services ?? 0 },
-    { label: 'Users', value: data?.totals?.users ?? 0 },
-    { label: 'Messages', value: data?.totals?.messages ?? 0 },
+  const stats = [
+    {
+      label: 'Projects',
+      value: data?.totals?.projects ?? 0,
+      icon: Briefcase,
+      color: 'amber',
+    },
+    {
+      label: 'Messages',
+      value: data?.totals?.messages ?? 0,
+      icon: MessageSquare,
+      color: 'emerald',
+    },
+    {
+      label: 'Team Members',
+      value: data?.totals?.users ?? 0,
+      icon: Users,
+      color: 'blue',
+    },
+    {
+      label: 'Services',
+      value: data?.totals?.services ?? 0,
+      icon: Settings,
+      color: 'purple',
+    },
   ]
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Return Home Link */}
-      <Link
-        to="/"
-        className="inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 whitespace-nowrap"
-      >
-        <ArrowLeft size={16} />
-        <span className="hidden sm:inline">Return Home</span>
-        <span className="sm:hidden">Home</span>
-      </Link>
+    <div className="space-y-8">
+      {/* Welcome Card */}
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-white p-6 sm:p-8">
+        {/* Decorative elements */}
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-amber-500/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-indigo-500/5 rounded-full blur-3xl" />
 
-      {/* Stats Grid - Responsive */}
-      <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {statCards.map((card) => (
-          <div key={card.label} className="card-panel px-3 sm:px-5 py-4 sm:py-6">
-            <p className="text-xs sm:text-sm font-medium uppercase tracking-[0.2em] text-slate-500">{card.label}</p>
-            <p className="mt-2 sm:mt-3 text-2xl sm:text-3xl lg:text-4xl font-semibold text-slate-950">{card.value}</p>
+        <div className="relative z-10">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Company Control Center</h2>
+              <p className="text-slate-600 max-w-xl">Manage all your civil works projects, services, team members, and incoming leads from one central hub. Monitor project status, track communications, and stay on top of operations.</p>
+            </div>
+            <div className="hidden sm:flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg flex-shrink-0">
+              <Briefcase size={32} />
+            </div>
           </div>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <AnimatedCounter
+            key={stat.label}
+            target={stat.value}
+            label={stat.label}
+            icon={stat.icon}
+            color={stat.color}
+          />
         ))}
       </div>
 
-      {/* Main Content Grid - Responsive */}
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] auto-rows-max lg:auto-rows-[1fr]">
+      {/* Main Content Grid */}
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] auto-rows-max lg:auto-rows-[1fr]">
         {/* Recent Projects */}
-        <div className="card-panel bg-gradient-to-br from-slate-50 to-slate-100/60 px-4 sm:px-6 py-4 sm:py-6 flex flex-col">
-          <h2 className="text-lg sm:text-2xl font-semibold text-slate-950">Recent Projects</h2>
-          <div className="mt-3 sm:mt-5 space-y-3 sm:space-y-4 flex-1">
-            {data?.recentProjects?.slice(0, 3).map((project) => (
-              <div key={project._id} className="rounded-3xl border border-amber-100/40 bg-gradient-to-r from-amber-50/60 to-white px-3 sm:px-4 py-3 sm:py-4 transition hover:border-amber-200/60 hover:shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3">
-                  <h3 className="text-base sm:text-lg font-semibold text-amber-950 line-clamp-1">{project.title}</h3>
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900">Recent Projects</h3>
+              <p className="text-sm text-slate-600 mt-1">Latest updates from your portfolio</p>
+            </div>
+            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center text-amber-700">
+              <Briefcase size={24} />
+            </div>
+          </div>
+
+          <div className="space-y-3 flex-1">
+            {data?.recentProjects?.slice(0, 3).map((project, idx) => (
+              <div
+                key={project._id}
+                className="group rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-100 hover:border-slate-200 px-4 py-4 transition-all duration-200 cursor-pointer"
+              >
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-slate-900 line-clamp-1 group-hover:text-amber-700 transition-colors">
+                    {project.title}
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-1">{project.location}</p>
+                  </div>
                   <div className="flex-shrink-0">
                     <StatusBadge status={project.status} />
                   </div>
                 </div>
-                <p className="mt-1 sm:mt-2 text-xs sm:text-sm font-medium text-amber-700">{project.location}</p>
-                <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-5 sm:leading-6 text-slate-700">{truncateText(project.description, 110)}</p>
+                <p className="text-xs text-slate-600 line-clamp-2">{truncateText(project.description, 90)}</p>
               </div>
             ))}
           </div>
+
           <Link
             to="/admin/projects"
-            className="mt-4 sm:mt-5 inline-flex text-xs sm:text-sm font-semibold text-amber-700 transition hover:text-amber-800"
+            className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-amber-700 hover:text-amber-800 transition-colors"
           >
-            View All Projects →
+            View All Projects
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
         {/* Latest Messages */}
-        <div className="card-panel bg-gradient-to-br from-slate-50 to-slate-100/60 px-4 sm:px-6 py-4 sm:py-6 flex flex-col">
-          <h2 className="text-lg sm:text-2xl font-semibold text-slate-950">Latest Messages</h2>
-          <div className="mt-3 sm:mt-5 space-y-3 sm:space-y-4 flex-1">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 flex flex-col shadow-sm hover:shadow-md transition-shadow duration-300">
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900">Latest Messages</h3>
+              <p className="text-sm text-slate-600 mt-1">New inquiries & leads</p>
+            </div>
+            <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-700">
+              <MessageSquare size={24} />
+            </div>
+          </div>
+
+          <div className="space-y-3 flex-1">
             {data?.recentMessages?.slice(0, 3).map((message) => (
               <div
                 key={message._id}
-                className={`rounded-3xl border px-3 sm:px-4 py-3 sm:py-4 transition hover:shadow-sm ${
+                className={`group rounded-xl border px-4 py-4 transition-all duration-200 cursor-pointer ${
                   message.isRead
-                    ? 'border-gray-200 bg-gray-100'
-                    : 'border-emerald-100/40 bg-gray-100 hover:border-emerald-200/60'
+                    ? 'border-slate-100 bg-slate-50/50 hover:bg-slate-100 hover:border-slate-200'
+                    : 'border-emerald-200/50 bg-emerald-50/50 hover:border-emerald-300 hover:bg-emerald-100/50'
                 }`}
               >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3">
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-800 line-clamp-1">
-                    {message.name}
-                  </h3>
-                  <span className="text-xs font-medium text-gray-600 flex-shrink-0">
-                    {formatDate(message.createdAt)}
-                  </span>
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-slate-900 line-clamp-1 text-sm">{message.name}</h4>
+                    <p className="text-xs text-slate-600 mt-0.5 line-clamp-1">{message.email}</p>
+                  </div>
+                  {!message.isRead && (
+                    <div className="flex-shrink-0 w-2 h-2 rounded-full bg-red-500 mt-1" />
+                  )}
                 </div>
-                <p className="mt-1 sm:mt-2 text-xs sm:text-sm font-medium text-gray-600 line-clamp-1">
-                  {message.email}
+                <p className="text-xs text-slate-600 line-clamp-2 leading-5">{truncateText(message.message, 85)}</p>
+                <p className="text-xs text-slate-400 mt-2 pt-2 border-t border-slate-200/50">
+                  {formatDate(message.createdAt)}
                 </p>
-                <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-5 sm:leading-6 text-gray-700 line-clamp-2">
-                  {truncateText(message.message, 110)}
-                </p>
-                {!message.isRead && (
-                  <p className="mt-2 text-xs font-semibold text-red-600">Unread</p>
-                )}
               </div>
             ))}
           </div>
+
           <Link
             to="/admin/messages"
-            className="mt-4 sm:mt-5 inline-flex text-xs sm:text-sm font-semibold text-emerald-700 transition hover:text-emerald-800"
+            className="group mt-6 inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors"
           >
-            View All Messages →
+            View All Messages
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>

@@ -2,9 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="" href="" />
+    <link rel="icon" type="" href="favicon.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>vite-frotend</title>
+    <title>IREME Civil works</title>
+    
+    <!-- Anti-FOUC Script: Apply saved theme before React renders -->
+    <script>
+      (function() {
+        try {
+          const THEME_KEY = 'civilWorks_theme'
+          const stored = localStorage.getItem(THEME_KEY)
+          
+          let theme = stored
+          if (stored !== 'dark' && stored !== 'light') {
+            // Check OS preference
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            theme = prefersDark ? 'dark' : 'light'
+          }
+          
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark')
+            document.documentElement.style.colorScheme = 'dark'
+          } else {
+            document.documentElement.classList.remove('dark')
+            document.documentElement.style.colorScheme = 'light'
+          }
+        } catch (e) {
+          // Silent fail if localStorage is unavailable
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>

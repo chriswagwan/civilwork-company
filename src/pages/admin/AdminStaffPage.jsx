@@ -253,7 +253,7 @@ const AdminStaffPage = () => {
               <div key={member._id} className="card-panel overflow-hidden flex flex-col border border-slate-200">
                 <div className="h-24 sm:h-28 lg:h-32 w-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center flex-shrink-0">
                   {member.photo ? (
-                    <img src={member.photo} alt={member.name} className="h-full w-full object-cover" />
+                    <img src={member.photo} alt={member.name} className="h-full w-full object-cover object-top" />
                   ) : (
                     <User size={32} className="text-slate-400" />
                   )}

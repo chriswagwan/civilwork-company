@@ -65,11 +65,11 @@ const ServicesPage = () => {
                     key={service._id}
                     className={`card-panel fade-in-up px-4 sm:px-5 py-5 sm:py-6 ${index ? `stagger-${index}` : ''}`}
                   >
-                    <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700">
+                    <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-500">
                       <Icon size={20} />
                     </div>
-                    <h3 className="mt-4 sm:mt-5 text-base sm:text-xl font-semibold text-slate-900">{service.name}</h3>
-                    <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-6 sm:leading-7 text-slate-600">{truncateText(service.description, 120)}</p>
+                    <h3 className="mt-4 sm:mt-5 text-base sm:text-xl font-semibold text-slate-900 dark:text-white">{service.name}</h3>
+                    <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-6 sm:leading-7 text-slate-600 dark:text-slate-400">{truncateText(service.description, 120)}</p>
                   </article>
                 )
               })}
@@ -77,7 +77,7 @@ const ServicesPage = () => {
 
             {totalPages > 1 && (
               <div className="pagination-container">
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-500 uppercase tracking-widest">
                   Showing {startIndex + 1}–{Math.min(endIndex, services.length)} of {services.length}
                 </span>
                 <div className="pagination-controls">
@@ -93,8 +93,8 @@ const ServicesPage = () => {
                     <ChevronLeft size={20} />
                   </button>
                   <div className="flex flex-col items-center min-w-[3rem]">
-                    <span className="text-sm font-bold text-slate-950">{currentPage}</span>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-tighter">Page</span>
+                    <span className="text-sm font-bold text-slate-950 dark:text-white">{currentPage}</span>
+                    <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-tighter">Page</span>
                   </div>
                   <button
                     onClick={() => {

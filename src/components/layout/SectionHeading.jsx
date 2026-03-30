@@ -1,7 +1,7 @@
 const SectionHeading = ({ eyebrow, title, copy, align = 'left' }) => (
   <div className={align === 'center' ? 'mx-auto max-w-3xl text-center' : 'max-w-3xl'}>
     {eyebrow ? (
-      <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-amber-700">
+      <span className="inline-flex rounded-full border border-amber-400/40 dark:border-amber-400/40 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-amber-700 dark:text-amber-500">
         {eyebrow}
       </span>
     ) : null}
