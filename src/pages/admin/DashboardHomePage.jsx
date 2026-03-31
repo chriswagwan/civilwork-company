@@ -144,23 +144,8 @@ const DashboardHomePage = () => {
             </h2>
 
             <p className="mt-4 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
-              Manage projects, services, team members, and incoming leads from one central hub. Stay on top of operations with a cleaner view of activity across the business.
+              Manage projects, services, team members, and incoming leads from one central hub with a cleaner view of the business at a glance.
             </p>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Operations</p>
-                <p className="mt-2 text-sm font-semibold text-slate-900">Project oversight</p>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Communications</p>
-                <p className="mt-2 text-sm font-semibold text-slate-900">Lead tracking</p>
-              </div>
-              <div className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-sm">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Team</p>
-                <p className="mt-2 text-sm font-semibold text-slate-900">Resource management</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

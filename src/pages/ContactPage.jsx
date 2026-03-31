@@ -1,4 +1,5 @@
-import { Mail, MapPin, Phone } from 'lucide-react'
+import * as Flags from 'country-flag-icons/react/3x2'
+import { Check, ChevronDown, Mail, MapPin, Phone } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import client from '../api/client.js'
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx'
@@ -20,30 +21,33 @@ const initialForm = {
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const phonePattern = /^[0-9]{9}$/
 const phoneCountryOptions = [
-  { value: '+1', label: 'United States (+1)' },
-  { value: '+44', label: 'United Kingdom (+44)' },
-  { value: '+33', label: 'France (+33)' },
-  { value: '+49', label: 'Germany (+49)' },
-  { value: '+34', label: 'Spain (+34)' },
-  { value: '+39', label: 'Italy (+39)' },
-  { value: '+212', label: 'Morocco (+212)' },
-  { value: '+213', label: 'Algeria (+213)' },
-  { value: '+216', label: 'Tunisia (+216)' },
-  { value: '+20', label: 'Egypt (+20)' },
-  { value: '+221', label: 'Senegal (+221)' },
-  { value: '+225', label: 'Cote d\'Ivoire (+225)' },
-  { value: '+234', label: 'Nigeria (+234)' },
-  { value: '+233', label: 'Ghana (+233)' },
-  { value: '+237', label: 'Cameroon (+237)' },
-  { value: '+254', label: 'Kenya (+254)' },
-  { value: '+250', label: 'Rwanda (+250)' },
-  { value: '+251', label: 'Ethiopia (+251)' },
-  { value: '+255', label: 'Tanzania (+255)' },
-  { value: '+256', label: 'Uganda (+256)' },
-  { value: '+27', label: 'South Africa (+27)' },
-  { value: '+91', label: 'India (+91)' },
-  { value: '+971', label: 'United Arab Emirates (+971)' },
+  { value: '+1', countryCode: 'US', countryName: 'United States' },
+  { value: '+44', countryCode: 'GB', countryName: 'United Kingdom' },
+  { value: '+33', countryCode: 'FR', countryName: 'France' },
+  { value: '+49', countryCode: 'DE', countryName: 'Germany' },
+  { value: '+34', countryCode: 'ES', countryName: 'Spain' },
+  { value: '+39', countryCode: 'IT', countryName: 'Italy' },
+  { value: '+212', countryCode: 'MA', countryName: 'Morocco' },
+  { value: '+213', countryCode: 'DZ', countryName: 'Algeria' },
+  { value: '+216', countryCode: 'TN', countryName: 'Tunisia' },
+  { value: '+20', countryCode: 'EG', countryName: 'Egypt' },
+  { value: '+221', countryCode: 'SN', countryName: 'Senegal' },
+  { value: '+225', countryCode: 'CI', countryName: 'Cote d\'Ivoire' },
+  { value: '+234', countryCode: 'NG', countryName: 'Nigeria' },
+  { value: '+233', countryCode: 'GH', countryName: 'Ghana' },
+  { value: '+237', countryCode: 'CM', countryName: 'Cameroon' },
+  { value: '+254', countryCode: 'KE', countryName: 'Kenya' },
+  { value: '+250', countryCode: 'RW', countryName: 'Rwanda' },
+  { value: '+251', countryCode: 'ET', countryName: 'Ethiopia' },
+  { value: '+255', countryCode: 'TZ', countryName: 'Tanzania' },
+  { value: '+256', countryCode: 'UG', countryName: 'Uganda' },
+  { value: '+27', countryCode: 'ZA', countryName: 'South Africa' },
+  { value: '+91', countryCode: 'IN', countryName: 'India' },
+  { value: '+971', countryCode: 'AE', countryName: 'United Arab Emirates' },
 ]
+
+const getPhoneCountryOption = (countryCodeValue) =>
+  phoneCountryOptions.find((option) => option.value === countryCodeValue) || null
 
 const validateContactField = (name, value) => {
   const trimmedValue = value.trim()
@@ -141,9 +145,12 @@ const ContactPage = () => {
   const [apiFieldErrors, setApiFieldErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [feedback, setFeedback] = useState({ type: '', message: '' })
+  const [isPhoneCountryMenuOpen, setIsPhoneCountryMenuOpen] = useState(false)
   const feedbackTimeoutRef = useRef(null)
+  const phoneCountryMenuRef = useRef(null)
   const fieldRefs = useRef({})
   const { errors: validationErrors } = validateContactForm(form)
+  const selectedPhoneCountry = getPhoneCountryOption(form.phoneCountryCode)
 
   const getDisplayedError = (fieldName) => {
     if (apiFieldErrors[fieldName]) {
@@ -172,6 +179,26 @@ const ContactPage = () => {
     }
   }, [feedback])
 
+  useEffect(() => {
+    if (!isPhoneCountryMenuOpen) {
+      return undefined
+    }
+
+    const handleOutsideInteraction = (event) => {
+      if (!phoneCountryMenuRef.current?.contains(event.target)) {
+        setIsPhoneCountryMenuOpen(false)
+      }
+    }
+
+    window.addEventListener('mousedown', handleOutsideInteraction)
+    window.addEventListener('touchstart', handleOutsideInteraction)
+
+    return () => {
+      window.removeEventListener('mousedown', handleOutsideInteraction)
+      window.removeEventListener('touchstart', handleOutsideInteraction)
+    }
+  }, [isPhoneCountryMenuOpen])
+
   const handleChange = (event) => {
     const { name, value } = event.target
     const nextForm = {
@@ -199,6 +226,40 @@ const ContactPage = () => {
       ...current,
       [name]: true,
     }))
+  }
+
+  const handlePhoneCountrySelect = (value) => {
+    setForm((current) => ({
+      ...current,
+      phoneCountryCode: value,
+    }))
+    setTouchedFields((current) => ({
+      ...current,
+      phoneCountryCode: true,
+    }))
+    setApiFieldErrors((current) => {
+      if (!current.phoneCountryCode) {
+        return current
+      }
+
+      return {
+        ...current,
+        phoneCountryCode: '',
+      }
+    })
+    setIsPhoneCountryMenuOpen(false)
+  }
+
+  const handlePhoneCountryBlur = (event) => {
+    if (phoneCountryMenuRef.current?.contains(event.relatedTarget)) {
+      return
+    }
+
+    setTouchedFields((current) => ({
+      ...current,
+      phoneCountryCode: true,
+    }))
+    setIsPhoneCountryMenuOpen(false)
   }
 
   const handleSubmit = async (event) => {
@@ -341,27 +402,76 @@ const ContactPage = () => {
           <div className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2">
             <label className="space-y-2">
               <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">{t(language, 'contact.phone')}</span>
-              <div className="grid grid-cols-[minmax(0,180px)_minmax(0,1fr)] gap-3">
-                <select
-                  name="phoneCountryCode"
-                  value={form.phoneCountryCode}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  ref={(element) => {
-                    fieldRefs.current.phoneCountryCode = element
-                  }}
-                  className={getFieldClassName(Boolean(getDisplayedError('phoneCountryCode')))}
-                  aria-invalid={Boolean(getDisplayedError('phoneCountryCode'))}
-                  aria-describedby={getDisplayedError('phoneCountryCode') ? 'contact-phone-country-error' : undefined}
-                  required
-                >
-                  <option value="">Country</option>
-                  {phoneCountryOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+              <div className="grid grid-cols-[minmax(0,120px)_minmax(0,1fr)] gap-3 sm:grid-cols-[minmax(0,140px)_minmax(0,1fr)]">
+                <div ref={phoneCountryMenuRef} className="relative">
+                  <button
+                    type="button"
+                    name="phoneCountryCode"
+                    onClick={() => setIsPhoneCountryMenuOpen((current) => !current)}
+                    onBlur={handlePhoneCountryBlur}
+                    ref={(element) => {
+                      fieldRefs.current.phoneCountryCode = element
+                    }}
+                    className={`${getFieldClassName(Boolean(getDisplayedError('phoneCountryCode')))} flex items-center justify-between gap-2 text-left`}
+                    aria-haspopup="listbox"
+                    aria-expanded={isPhoneCountryMenuOpen}
+                    aria-invalid={Boolean(getDisplayedError('phoneCountryCode'))}
+                    aria-describedby={getDisplayedError('phoneCountryCode') ? 'contact-phone-country-error' : undefined}
+                  >
+                    <span className="flex min-w-0 items-center gap-2">
+                      {selectedPhoneCountry ? (
+                        <span className="overflow-hidden rounded-[0.35rem] ring-1 ring-slate-200 dark:ring-slate-700">
+                          {(() => {
+                            const FlagIcon = Flags[selectedPhoneCountry.countryCode]
+                            return FlagIcon ? <FlagIcon title={selectedPhoneCountry.countryName} className="h-4 w-6" /> : null
+                          })()}
+                        </span>
+                      ) : (
+                        <span className="h-4 w-6 rounded-[0.35rem] border border-dashed border-slate-300 dark:border-slate-600" />
+                      )}
+                      <span className={`truncate ${selectedPhoneCountry ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}>
+                        {selectedPhoneCountry ? selectedPhoneCountry.value : 'Code'}
+                      </span>
+                    </span>
+                    <ChevronDown size={16} className={`flex-shrink-0 transition ${isPhoneCountryMenuOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {isPhoneCountryMenuOpen ? (
+                    <div className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-20 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/10 dark:border-slate-700 dark:bg-slate-900 dark:shadow-black/30">
+                      <ul role="listbox" aria-label="Country code" className="max-h-72 overflow-y-auto py-2">
+                        {phoneCountryOptions.map((option) => {
+                          const FlagIcon = Flags[option.countryCode]
+                          const isSelected = option.value === form.phoneCountryCode
+
+                          return (
+                            <li key={option.value}>
+                              <button
+                                type="button"
+                                role="option"
+                                aria-selected={isSelected}
+                                onMouseDown={(event) => event.preventDefault()}
+                                onClick={() => handlePhoneCountrySelect(option.value)}
+                                className={`flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left text-sm transition ${
+                                  isSelected
+                                    ? 'bg-amber-50 text-amber-900 dark:bg-amber-500/10 dark:text-amber-100'
+                                    : 'text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800/80'
+                                }`}
+                              >
+                                <span className="flex min-w-0 items-center gap-2.5">
+                                  <span className="overflow-hidden rounded-[0.35rem] ring-1 ring-slate-200 dark:ring-slate-700">
+                                    {FlagIcon ? <FlagIcon title={option.countryName} className="h-4 w-6" /> : null}
+                                  </span>
+                                  <span className="font-medium">{option.value}</span>
+                                </span>
+                                {isSelected ? <Check size={16} className="flex-shrink-0" /> : null}
+                              </button>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </div>
+                  ) : null}
+                </div>
                 <input
                   type="tel"
                   name="phone"

@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight, MessageCircle, X } from 'lucide-react'
 import client from '../../api/client.js'
 import EmptyState from '../../components/common/EmptyState.jsx'
 import LoadingSpinner from '../../components/common/LoadingSpinner.jsx'
-import { formatDate } from '../../utils/formatters.js'
+import { formatDateTime } from '../../utils/formatters.js'
 
 const normalizeWhatsAppNumber = (phone = '') => {
   const trimmedPhone = phone.trim()
@@ -38,10 +38,17 @@ const buildWhatsAppLink = (phone, message) => {
   return `https://wa.me/${phonePath}${textQuery}`
 }
 
+const messageFilters = [
+  { value: 'all', label: 'All' },
+  { value: 'unread', label: 'Unread' },
+  { value: 'read', label: 'Read' },
+]
+
 const AdminMessagesPage = () => {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
+  const [statusFilter, setStatusFilter] = useState('unread')
   const [replyMessage, setReplyMessage] = useState('')
   const [replyingTo, setReplyingTo] = useState(null)
   const [selectedMessage, setSelectedMessage] = useState(null)
@@ -65,7 +72,9 @@ const AdminMessagesPage = () => {
     initialize()
   }, [])
 
-  const markAsRead = async (messageId) => {
+  const markAsRead = async (messageId, options = {}) => {
+    const { showNotification = true } = options
+
     // Optimistically update the UI
     setMessages((prevMessages) =>
       prevMessages.map((msg) =>
@@ -81,10 +90,13 @@ const AdminMessagesPage = () => {
     try {
       await client.patch(`/messages/${messageId}/read`)
       window.dispatchEvent(new Event('messages:updated'))
-      setNotification({ show: true, message: '✓ Message marked as read', type: 'success' })
-      setTimeout(() => {
-        setNotification({ show: false, message: '', type: 'info' })
-      }, 3000)
+
+      if (showNotification) {
+        setNotification({ show: true, message: '✓ Message marked as read', type: 'success' })
+        setTimeout(() => {
+          setNotification({ show: false, message: '', type: 'info' })
+        }, 3000)
+      }
     } catch (error) {
       // Revert on error
       await loadMessages()
@@ -92,6 +104,16 @@ const AdminMessagesPage = () => {
       setTimeout(() => {
         setNotification({ show: false, message: '', type: 'info' })
       }, 3000)
+    }
+  }
+
+  const handleOpenMessage = (message) => {
+    const nextSelectedMessage = message.isRead ? message : { ...message, isRead: true }
+
+    setSelectedMessage(nextSelectedMessage)
+
+    if (!message.isRead) {
+      markAsRead(message._id, { showNotification: false })
     }
   }
 
@@ -116,10 +138,36 @@ const AdminMessagesPage = () => {
     }, 4000)
   }
 
-  const totalPages = Math.ceil(messages.length / itemsPerPage)
+  const unreadCount = messages.filter((message) => !message.isRead).length
+  const readCount = messages.length - unreadCount
+  const filteredMessages = messages
+    .filter((message) => {
+      if (statusFilter === 'unread') {
+        return !message.isRead
+      }
+
+      if (statusFilter === 'read') {
+        return message.isRead
+      }
+
+      return true
+    })
+    .sort((leftMessage, rightMessage) => new Date(rightMessage.createdAt) - new Date(leftMessage.createdAt))
+
+  const totalPages = Math.ceil(filteredMessages.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
-  const paginatedMessages = messages.slice(startIndex, endIndex)
+  const paginatedMessages = filteredMessages.slice(startIndex, endIndex)
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [statusFilter])
+
+  useEffect(() => {
+    if (totalPages > 0 && currentPage > totalPages) {
+      setCurrentPage(totalPages)
+    }
+  }, [currentPage, totalPages])
 
   if (loading) {
     return (
@@ -135,6 +183,41 @@ const AdminMessagesPage = () => {
 
   return (
     <>
+      <div className="mb-5 flex flex-col gap-3 rounded-[1.75rem] border border-slate-200 bg-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Message Filter</p>
+          <p className="mt-1 text-sm text-slate-600">Switch between unread and read messages while keeping the original received timestamp.</p>
+        </div>
+
+        <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-1">
+          {messageFilters.map((filter) => {
+            const count = filter.value === 'unread' ? unreadCount : filter.value === 'read' ? readCount : messages.length
+            const isActive = statusFilter === filter.value
+
+            return (
+              <button
+                key={filter.value}
+                type="button"
+                onClick={() => setStatusFilter(filter.value)}
+                className={`rounded-full px-3 py-2 text-xs font-semibold transition sm:px-4 ${
+                  isActive
+                    ? 'bg-slate-950 text-white shadow-lg shadow-slate-900/15'
+                    : 'text-slate-600 hover:bg-white hover:text-slate-950'
+                }`}
+              >
+                {filter.label} ({count})
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {filteredMessages.length === 0 ? (
+        <EmptyState
+          title={statusFilter === 'read' ? 'No read messages yet' : 'No unread messages right now'}
+          copy={statusFilter === 'read' ? 'Messages marked as read will appear here.' : 'New incoming messages will appear here until they are marked as read.'}
+        />
+      ) : (
       <div className="grid gap-4 md:grid-cols-2">
         {paginatedMessages.map((message) => (
           <div key={message._id} className="card-panel flex flex-col gap-3 px-6 py-4">
@@ -154,7 +237,7 @@ const AdminMessagesPage = () => {
                   {message.email}
                   {message.phone ? ` • ${message.phone}` : ''}
                 </p>
-                <p className="text-xs text-slate-500">{formatDate(message.createdAt)}</p>
+                <p className="text-xs text-slate-500">Received {formatDateTime(message.createdAt)}</p>
               </div>
             </div>
             {message.subject ? <p className="text-xs font-semibold text-amber-700">{message.subject}</p> : null}
@@ -162,7 +245,7 @@ const AdminMessagesPage = () => {
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
-                onClick={() => setSelectedMessage(message)}
+                onClick={() => handleOpenMessage(message)}
                 className="rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 flex-1 sm:flex-initial"
               >
                 Read Message
@@ -192,6 +275,7 @@ const AdminMessagesPage = () => {
           </div>
         ))}
       </div>
+      )}
 
       {replyingTo && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-40">
@@ -254,7 +338,7 @@ const AdminMessagesPage = () => {
             <div className="px-6 sm:px-8 py-6 overflow-y-auto max-h-[calc(100vh-200px)] space-y-4">
               <div>
                 <p className="text-xs font-semibold text-slate-500 uppercase tracking-[0.1em]">Received</p>
-                <p className="text-sm text-slate-600">{formatDate(selectedMessage.createdAt)}</p>
+                <p className="text-sm text-slate-600">{formatDateTime(selectedMessage.createdAt)}</p>
               </div>
 
               {selectedMessage.phone && (
@@ -327,24 +411,29 @@ const AdminMessagesPage = () => {
         </div>
       )}
 
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between rounded-2xl border border-slate-200 px-6 py-4">
-          <span className="text-sm text-slate-600">
-            Page {currentPage} of {totalPages}
-          </span>
-          <div className="flex gap-2">
+      {filteredMessages.length > 0 && totalPages > 1 && (
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-slate-200 bg-gradient-to-r from-white via-slate-50 to-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Pagination</p>
+            <p className="mt-1 text-sm font-medium text-slate-600">
+              Page <span className="text-slate-950">{currentPage}</span> of <span className="text-slate-950">{totalPages}</span>
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow disabled:translate-y-0 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-400 disabled:shadow-none sm:px-5 sm:text-sm"
             >
               <ChevronLeft size={16} />
               Previous
             </button>
+
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
-              className="rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-xl disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-100 disabled:shadow-none sm:px-5 sm:text-sm"
             >
               Next
               <ChevronRight size={16} />

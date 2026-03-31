@@ -18,9 +18,17 @@ const emptyForm = {
   existingImages: [],
 }
 
+const projectStatusFilters = [
+  { value: 'all', label: 'All' },
+  { value: 'planned', label: 'Planned' },
+  { value: 'ongoing', label: 'Ongoing' },
+  { value: 'completed', label: 'Completed' },
+]
+
 const AdminProjectsPage = () => {
   const [projects, setProjects] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
   const [form, setForm] = useState(emptyForm)
   const [files, setFiles] = useState([])
   const [filePreviews, setFilePreviews] = useState([])
@@ -73,13 +81,20 @@ const AdminProjectsPage = () => {
 
   const filteredProjects = projects.filter((project) => {
     const searchLower = searchQuery.toLowerCase()
-    return (
+    const matchesSearch = (
       project.title.toLowerCase().includes(searchLower) ||
       project.location.toLowerCase().includes(searchLower) ||
       project.category.toLowerCase().includes(searchLower) ||
       project.description.toLowerCase().includes(searchLower)
     )
+    const matchesStatus = statusFilter === 'all' || project.status === statusFilter
+
+    return matchesSearch && matchesStatus
   })
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchQuery, statusFilter])
 
   const resetForm = () => {
     setForm(emptyForm)
@@ -475,7 +490,7 @@ const AdminProjectsPage = () => {
       {!showForm && (
         <>
           {projects.length > 0 && (
-            <div className="card-panel bg-white">
+            <div className="card-panel space-y-4 bg-white">
               <div className="relative">
                 <Search className="absolute left-4 top-3.5 text-slate-400" size={20} />
                 <input
@@ -486,11 +501,35 @@ const AdminProjectsPage = () => {
                   className="w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 outline-none focus:border-amber-500"
                 />
               </div>
+
+              <div className="flex flex-wrap items-center gap-2">
+                {projectStatusFilters.map((filter) => {
+                  const count = filter.value === 'all'
+                    ? projects.length
+                    : projects.filter((project) => project.status === filter.value).length
+                  const isActive = statusFilter === filter.value
+
+                  return (
+                    <button
+                      key={filter.value}
+                      type="button"
+                      onClick={() => setStatusFilter(filter.value)}
+                      className={`rounded-full px-4 py-2 text-xs font-semibold transition sm:text-sm ${
+                        isActive
+                          ? 'border border-amber-200 bg-amber-100 text-amber-900 shadow-sm'
+                          : 'border border-slate-200 bg-white text-slate-600 hover:border-amber-200 hover:bg-amber-50 hover:text-amber-800'
+                      }`}
+                    >
+                      {filter.label} ({count})
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           )}
 
           {filteredProjects.length === 0 && projects.length > 0 ? (
-            <EmptyState title="No projects found" copy="Try adjusting your search query." />
+            <EmptyState title="No projects found" copy="Try adjusting your search query or status filter." />
           ) : projects.length === 0 ? (
             <EmptyState title="No projects created" copy="Use the form above to add your first project." />
           ) : (

@@ -1,4 +1,4 @@
-import { Compass, Flag, Shield, User } from 'lucide-react'
+import { Compass, Flag, Mail, Phone, Shield, User } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import client from '../api/client.js'
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx'
@@ -120,6 +120,18 @@ const AboutPage = () => {
                   <h3 className="text-base sm:text-lg font-semibold text-slate-950 dark:text-white line-clamp-2">{member.name}</h3>
                   <p className="text-xs sm:text-sm font-medium text-amber-700 dark:text-amber-600 mt-1">{member.title}</p>
                   <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-5 sm:leading-6 mt-2 sm:mt-3 line-clamp-3">{member.description}</p>
+                  {member.email ? (
+                    <p className="mt-3 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-500 break-all">
+                      <Mail size={14} className="flex-shrink-0" />
+                      <span>{member.email}</span>
+                    </p>
+                  ) : null}
+                  {member.phone ? (
+                    <p className="mt-2 inline-flex items-center gap-2 text-xs text-slate-500 dark:text-slate-500">
+                      <Phone size={14} className="flex-shrink-0" />
+                      <span>{member.phone}</span>
+                    </p>
+                  ) : null}
                 </div>
               </article>
             ))}

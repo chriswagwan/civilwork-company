@@ -1,4 +1,4 @@
-import { Trash2, Pencil, User } from 'lucide-react'
+import { Mail, Pencil, Phone, Trash2, User } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import client from '../../api/client.js'
 import EmptyState from '../../components/common/EmptyState.jsx'
@@ -7,6 +7,8 @@ import LoadingSpinner from '../../components/common/LoadingSpinner.jsx'
 const emptyStaffForm = {
   name: '',
   title: '',
+  email: '',
+  phone: '',
   description: '',
   photo: '',
 }
@@ -89,6 +91,8 @@ const AdminStaffPage = () => {
     setStaffForm({
       name: member.name,
       title: member.title,
+      email: member.email || '',
+      phone: member.phone || '',
       description: member.description,
       photo: member.photo || '',
     })
@@ -166,6 +170,23 @@ const AdminStaffPage = () => {
               />
             </label>
             <label className="space-y-2">
+              <span className="text-xs sm:text-sm font-medium text-slate-700">Email Address</span>
+              <div className="relative">
+                <Mail size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="email"
+                  name="email"
+                  value={staffForm.email}
+                  onChange={handleStaffChange}
+                  className="w-full rounded-2xl border border-slate-200 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-amber-500 sm:px-4 sm:py-3 sm:pl-11"
+                  placeholder="name@company.com"
+                />
+              </div>
+            </label>
+          </div>
+
+          <div className="grid gap-3 sm:gap-4 md:gap-5 grid-cols-1 md:grid-cols-2">
+            <label className="space-y-2">
               <span className="text-xs sm:text-sm font-medium text-slate-700">Title / Position</span>
               <input
                 type="text"
@@ -175,6 +196,20 @@ const AdminStaffPage = () => {
                 className="w-full rounded-2xl border border-slate-200 px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-amber-500"
                 required
               />
+            </label>
+            <label className="space-y-2">
+              <span className="text-xs sm:text-sm font-medium text-slate-700">Phone Number</span>
+              <div className="relative">
+                <Phone size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="tel"
+                  name="phone"
+                  value={staffForm.phone}
+                  onChange={handleStaffChange}
+                  className="w-full rounded-2xl border border-slate-200 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-amber-500 sm:px-4 sm:py-3 sm:pl-11"
+                  placeholder="+1 555 123 4567"
+                />
+              </div>
             </label>
           </div>
 
@@ -262,6 +297,18 @@ const AdminStaffPage = () => {
                   <h3 className="text-sm sm:text-base font-semibold text-slate-950 line-clamp-2">{member.name}</h3>
                   <p className="text-xs font-medium text-amber-700 mt-1">{member.title}</p>
                   <p className="text-xs text-slate-600 leading-4 sm:leading-5 mt-1.5 sm:mt-2 line-clamp-2">{member.description}</p>
+                  {member.email ? (
+                    <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-slate-500 break-all">
+                      <Mail size={12} className="flex-shrink-0" />
+                      <span>{member.email}</span>
+                    </p>
+                  ) : null}
+                  {member.phone ? (
+                    <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-slate-500">
+                      <Phone size={12} className="flex-shrink-0" />
+                      <span>{member.phone}</span>
+                    </p>
+                  ) : null}
                 </div>
                 <div className="flex gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border-t border-slate-200">
                   <button
