@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { Mail, Lock, AlertCircle, ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth.js'
@@ -10,6 +10,21 @@ const LoginPage = () => {
   const { login, loading } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
+
+  useEffect(() => {
+    const htmlElement = document.documentElement
+    const wasDark = htmlElement.classList.contains('dark')
+
+    htmlElement.classList.remove('dark')
+    htmlElement.style.colorScheme = 'light'
+
+    return () => {
+      if (wasDark) {
+        htmlElement.classList.add('dark')
+        htmlElement.style.colorScheme = 'dark'
+      }
+    }
+  }, [])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -139,6 +154,15 @@ const LoginPage = () => {
                 'Sign In'
               )}
             </button>
+
+            <div className="flex justify-end">
+              <Link
+                to="/admin/forgot-password"
+                className="text-sm font-medium text-amber-700 transition hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300"
+              >
+                Forgot password?
+              </Link>
+            </div>
           </form>
 
           {/* Footer Text */}

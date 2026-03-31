@@ -39,6 +39,10 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const updateAuth = (nextAuth) => {
+    setAuth(nextAuth)
+  }
+
   const logout = () => setAuth(null)
 
   const value = useMemo(
@@ -49,6 +53,7 @@ export const AuthProvider = ({ children }) => {
       loading,
       login,
       register,
+      updateAuth,
       logout,
     }),
     [auth, loading],

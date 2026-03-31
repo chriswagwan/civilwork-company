@@ -76,7 +76,7 @@ const AboutPage = () => {
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           {values.map(({ icon, title, copy }) => (
             <article key={title} className="card-panel px-4 sm:px-6 py-6 sm:py-8">
-              <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-500">
+              <div className="flex text-amber-700 dark:text-amber-500">
                 {icon}
               </div>
               <h3 className="mt-4 sm:mt-5 text-lg sm:text-2xl font-semibold text-slate-900 dark:text-white">{title}</h3>

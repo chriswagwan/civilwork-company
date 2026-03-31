@@ -42,6 +42,16 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes shrink {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
 html.dark {
   --color-ink: #e5eef8;
   --color-slate: #cbd5e1;

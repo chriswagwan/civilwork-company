@@ -8,6 +8,7 @@ import PageHero from '../components/layout/PageHero.jsx'
 import { formatDate } from '../utils/formatters.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { t } from '../utils/translations.js'
+import { usePublicTheme } from '../context/PublicThemeContext.jsx'
 
 const AutoSlider = ({ images, alt }) => {
   const [index, setIndex] = useState(0)
@@ -67,6 +68,7 @@ const ProjectsPage = () => {
   const [selectedProject, setSelectedProject] = useState(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { language } = useLanguage()
+  const { isDark } = usePublicTheme()
   const itemsPerPage = 6
 
   useEffect(() => {
@@ -81,6 +83,27 @@ const ProjectsPage = () => {
 
     fetchProjects()
   }, [])
+
+  useEffect(() => {
+    if (!selectedProject) {
+      document.body.style.overflow = ''
+      return undefined
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedProject(null)
+      }
+    }
+
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [selectedProject])
 
   const totalPages = Math.ceil(projects.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
@@ -166,31 +189,48 @@ const ProjectsPage = () => {
 
         {/* Project Details Modal */}
         {selectedProject && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-            <div className="bg-white dark:bg-slate-950 rounded-3xl shadow-2xl dark:shadow-slate-950/50 max-w-2xl w-full my-8">
+          <div
+            className={`fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4 backdrop-blur-md ${
+              isDark
+                ? 'bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.12),_transparent_20%),linear-gradient(to_bottom,_rgba(2,6,23,0.96),_rgba(3,7,18,0.9))]'
+                : 'bg-slate-950/45'
+            }`}
+            onClick={() => setSelectedProject(null)}
+          >
+            <div
+              className={`my-8 w-full max-w-4xl overflow-hidden rounded-[2rem] border shadow-[0_30px_120px_-30px_rgba(15,23,42,0.35)] ${
+                isDark
+                  ? 'border-slate-800/90 bg-[linear-gradient(180deg,rgba(15,23,42,0.98),rgba(2,6,23,0.98))] shadow-[0_30px_120px_-24px_rgba(2,6,23,0.95)]'
+                  : 'border-white/70 bg-white/95'
+              }`}
+              onClick={(event) => event.stopPropagation()}
+            >
               {/* Modal Header */}
-              <div className="sticky top-0 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 rounded-t-3xl px-6 sm:px-8 py-4 sm:py-6 flex items-start justify-between gap-4">
+              <div className={`sticky top-0 z-20 border-b px-6 py-4 backdrop-blur sm:px-8 sm:py-6 ${isDark ? 'border-slate-800/90 bg-slate-950/94' : 'border-slate-200/80 bg-white/92'}`}>
+                <div className="flex items-start justify-between gap-4">
                 <div className="flex-grow min-w-0">
-                  <p className="text-xs font-medium text-slate-500 dark:text-slate-500">{selectedProject.category}</p>
-                  <h2 className="mt-1 text-xl sm:text-2xl font-semibold text-slate-950 dark:text-white line-clamp-2">{selectedProject.title}</h2>
+                  <p className={`text-xs font-medium uppercase tracking-[0.22em] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{selectedProject.category}</p>
+                  <h2 className={`mt-2 line-clamp-2 text-xl font-semibold sm:text-2xl ${isDark ? 'text-white' : 'text-slate-950'}`}>{selectedProject.title}</h2>
                 </div>
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="flex-shrink-0 rounded-full border border-slate-200 dark:border-slate-800 p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+                  className={`flex-shrink-0 rounded-full border p-2 transition ${isDark ? 'border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800' : 'border-slate-200 bg-white/80 text-slate-600 hover:bg-slate-50'}`}
                   title="Close modal"
                 >
                   <X size={20} />
                 </button>
+                </div>
               </div>
 
               {/* Modal Body */}
-              <div className="px-6 sm:px-8 py-6 overflow-y-auto max-h-[calc(100vh-200px)] space-y-4">
+              <div className="max-h-[calc(100vh-200px)] overflow-y-auto px-6 py-6 sm:px-8">
                 {selectedProject.images && selectedProject.images.length > 0 && (
-                  <div className="relative">
+                  <div className={`relative overflow-hidden rounded-[1.75rem] border ${isDark ? 'border-slate-800 bg-slate-950' : 'border-slate-200 bg-slate-100'}`}>
+                    <div className={`absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b to-transparent ${isDark ? 'from-slate-950/85' : 'from-slate-950/30'}`} />
                     <img
                       src={selectedProject.images[currentImageIndex]}
                       alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`}
-                      className="rounded-2xl w-full h-60 sm:h-80 object-cover"
+                      className="h-60 w-full object-cover sm:h-80 lg:h-[26rem]"
                     />
                     
                     {/* Image Navigation */}
@@ -199,7 +239,7 @@ const ProjectsPage = () => {
                         {/* Previous Button */}
                         <button
                           onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? selectedProject.images.length - 1 : prev - 1))}
-                          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition"
+                          className={`absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full border p-2.5 text-white backdrop-blur transition ${isDark ? 'border-slate-700 bg-slate-900/80 hover:bg-slate-900' : 'border-white/20 bg-slate-950/55 hover:bg-slate-950/75'}`}
                           title="Previous image"
                         >
                           <ChevronLeft size={20} />
@@ -208,69 +248,92 @@ const ProjectsPage = () => {
                         {/* Next Button */}
                         <button
                           onClick={() => setCurrentImageIndex((prev) => (prev === selectedProject.images.length - 1 ? 0 : prev + 1))}
-                          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition"
+                          className={`absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full border p-2.5 text-white backdrop-blur transition ${isDark ? 'border-slate-700 bg-slate-900/80 hover:bg-slate-900' : 'border-white/20 bg-slate-950/55 hover:bg-slate-950/75'}`}
                           title="Next image"
                         >
                           <ChevronRight size={20} />
                         </button>
 
                         {/* Image Counter */}
-                        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                        <div className={`absolute bottom-3 left-1/2 z-10 -translate-x-1/2 rounded-full border px-3 py-1 text-xs font-semibold text-white backdrop-blur ${isDark ? 'border-slate-700 bg-slate-900/80' : 'border-white/20 bg-slate-950/55'}`}>
                           {currentImageIndex + 1} of {selectedProject.images.length}
-                        </div>
-
-                        {/* Image Thumbnails */}
-                        <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
-                          {selectedProject.images.map((image, index) => (
-                            <button
-                              key={index}
-                              onClick={() => setCurrentImageIndex(index)}
-                              className={`flex-shrink-0 rounded-lg overflow-hidden transition ${
-                                index === currentImageIndex ? 'ring-2 ring-amber-500' : 'opacity-60 hover:opacity-100'
-                              }`}
-                            >
-                              <img
-                                src={image}
-                                alt={`Thumbnail ${index + 1}`}
-                                className="h-16 w-20 object-cover"
-                              />
-                            </button>
-                          ))}
                         </div>
                       </>
                     )}
                   </div>
                 )}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-2">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.15em] text-amber-700">{selectedProject.location}</p>
-                      <div className="mt-2">
-                        <StatusBadge status={selectedProject.status} />
-                      </div>
-                    </div>
+
+                {selectedProject.images && selectedProject.images.length > 1 && (
+                  <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
+                    {selectedProject.images.map((image, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentImageIndex(index)}
+                        className={`group relative flex-shrink-0 overflow-hidden rounded-xl border transition ${
+                          index === currentImageIndex
+                            ? isDark
+                              ? 'border-amber-400 ring-2 ring-amber-400/40'
+                              : 'border-amber-400/80 ring-2 ring-amber-400/50'
+                            : isDark
+                              ? 'border-slate-700 opacity-70 hover:opacity-100'
+                              : 'border-slate-200 opacity-75 hover:opacity-100'
+                        }`}
+                        title={`View image ${index + 1}`}
+                      >
+                        <img
+                          src={image}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="h-16 w-20 object-cover sm:h-18 sm:w-24"
+                        />
+                        <span className={`absolute inset-0 bg-slate-950/0 transition ${isDark ? 'group-hover:bg-slate-950/20' : 'group-hover:bg-slate-950/10'}`} />
+                      </button>
+                    ))}
                   </div>
-                  <div>
-                    <h3 className="text-sm font-semibold text-slate-950 dark:text-white mb-2">Description</h3>
-                    <p className="text-sm leading-7 text-slate-600 dark:text-slate-400 whitespace-pre-wrap">
+                )}
+
+                <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
+                  <div className={`rounded-[1.75rem] border px-5 py-5 shadow-sm ${isDark ? 'border-slate-800 bg-slate-900/72' : 'border-slate-200 bg-white'}`}>
+                    <h3 className={`mb-3 text-sm font-semibold uppercase tracking-[0.18em] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Project Overview</h3>
+                    <p className={`whitespace-pre-wrap text-sm leading-7 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                       {selectedProject.description}
                     </p>
                   </div>
-                  {selectedProject.completionDate && (
-                    <div>
-                      <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                        Completion Date: <span className="text-amber-700 dark:text-amber-600">{formatDate(selectedProject.completionDate)}</span>
-                      </p>
+
+                  <div className="space-y-4">
+                    <div className={`rounded-[1.75rem] border px-5 py-5 shadow-sm ${isDark ? 'border-slate-800 bg-[linear-gradient(180deg,rgba(15,23,42,0.96),rgba(15,23,42,0.82))]' : 'border-slate-200 bg-slate-50'}`}>
+                      <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Project Details</p>
+                      <div className="mt-4 space-y-4">
+                        <div>
+                          <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Location</p>
+                          <p className={`mt-1 text-sm font-semibold ${isDark ? 'text-amber-400' : 'text-amber-700'}`}>{selectedProject.location}</p>
+                        </div>
+
+                        <div>
+                          <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Status</p>
+                          <div className="mt-2">
+                            <StatusBadge status={selectedProject.status} />
+                          </div>
+                        </div>
+
+                        {selectedProject.completionDate && (
+                          <div>
+                            <p className={`text-[11px] font-semibold uppercase tracking-[0.16em] ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Completion Date</p>
+                            <p className={`mt-1 text-sm font-medium ${isDark ? 'text-slate-200' : 'text-slate-700'}`}>
+                              {formatDate(selectedProject.completionDate)}
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
 
               {/* Modal Footer */}
-              <div className="border-t border-slate-200 dark:border-slate-800 rounded-b-3xl px-6 sm:px-8 py-4 bg-slate-50 dark:bg-slate-900 flex justify-end gap-3">
+              <div className={`flex justify-end gap-3 border-t px-6 py-4 sm:px-8 ${isDark ? 'border-slate-800 bg-slate-950/90' : 'border-slate-200 bg-slate-50'}`}>
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="rounded-full border border-slate-200 dark:border-slate-700 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                  className={`rounded-full border px-4 py-2.5 text-xs font-semibold transition sm:px-5 sm:text-sm ${isDark ? 'border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800' : 'border-slate-200 text-slate-700 hover:bg-slate-100'}`}
                 >
                   Close
                 </button>

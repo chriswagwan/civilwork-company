@@ -1,9 +1,42 @@
 import { useEffect, useState } from 'react'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MessageCircle, X } from 'lucide-react'
 import client from '../../api/client.js'
 import EmptyState from '../../components/common/EmptyState.jsx'
 import LoadingSpinner from '../../components/common/LoadingSpinner.jsx'
 import { formatDate } from '../../utils/formatters.js'
+
+const normalizeWhatsAppNumber = (phone = '') => {
+  const trimmedPhone = phone.trim()
+
+  if (!trimmedPhone) {
+    return ''
+  }
+
+  if (trimmedPhone.startsWith('+')) {
+    return `+${trimmedPhone.slice(1).replace(/\D/g, '')}`
+  }
+
+  const digitsOnly = trimmedPhone.replace(/\D/g, '')
+
+  if (digitsOnly.startsWith('00')) {
+    return digitsOnly.slice(2)
+  }
+
+  return digitsOnly
+}
+
+const buildWhatsAppLink = (phone, message) => {
+  const normalizedPhone = normalizeWhatsAppNumber(phone)
+
+  if (!normalizedPhone) {
+    return ''
+  }
+
+  const phonePath = normalizedPhone.startsWith('+') ? normalizedPhone.slice(1) : normalizedPhone
+  const textQuery = message.trim() ? `?text=${encodeURIComponent(message.trim())}` : ''
+
+  return `https://wa.me/${phonePath}${textQuery}`
+}
 
 const AdminMessagesPage = () => {
   const [messages, setMessages] = useState([])
@@ -47,6 +80,7 @@ const AdminMessagesPage = () => {
 
     try {
       await client.patch(`/messages/${messageId}/read`)
+      window.dispatchEvent(new Event('messages:updated'))
       setNotification({ show: true, message: '✓ Message marked as read', type: 'success' })
       setTimeout(() => {
         setNotification({ show: false, message: '', type: 'info' })
@@ -61,10 +95,19 @@ const AdminMessagesPage = () => {
     }
   }
 
-  const sendReply = async (email) => {
-    if (!replyMessage.trim()) return
+  const openWhatsAppReply = (message) => {
+    const whatsappLink = buildWhatsAppLink(message.phone, replyMessage)
 
-    setNotification({ show: true, message: '📧 Upcoming feature! Reply functionality will be available soon.', type: 'info' })
+    if (!whatsappLink) {
+      setNotification({ show: true, message: '✗ This customer did not provide a valid phone number for WhatsApp.', type: 'error' })
+      setTimeout(() => {
+        setNotification({ show: false, message: '', type: 'info' })
+      }, 4000)
+      return
+    }
+
+    window.open(whatsappLink, '_blank', 'noopener,noreferrer')
+    setNotification({ show: true, message: 'WhatsApp opened in a new tab with your draft reply.', type: 'success' })
     setReplyMessage('')
     setReplyingTo(null)
 
@@ -135,10 +178,15 @@ const AdminMessagesPage = () => {
               )}
               <button
                 type="button"
-                onClick={() => setReplyingTo(message.email)}
-                className="rounded-full border border-blue-500 px-3 py-2 text-xs font-medium text-blue-600 hover:bg-blue-50 flex-1 sm:flex-initial"
+                onClick={() => {
+                  setReplyMessage(`Hello ${message.name},`)
+                  setReplyingTo(message)
+                }}
+                disabled={!normalizeWhatsAppNumber(message.phone)}
+                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-emerald-500 px-3 py-2 text-xs font-medium text-emerald-700 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400 disabled:hover:bg-transparent sm:flex-initial"
               >
-                Reply
+                <MessageCircle size={14} />
+                WhatsApp Reply
               </button>
             </div>
           </div>
@@ -148,28 +196,35 @@ const AdminMessagesPage = () => {
       {replyingTo && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-40">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-slate-950 mb-4">Reply to {replyingTo}</h3>
+            <h3 className="text-lg font-semibold text-slate-950 mb-2">Reply on WhatsApp</h3>
+            <p className="mb-4 text-sm text-slate-500">
+              Opening chat for {replyingTo.name}
+              {replyingTo.phone ? ` • ${replyingTo.phone}` : ''}
+            </p>
             <textarea
               className="w-full border border-slate-300 rounded-lg p-2 mb-4"
               rows="4"
-              placeholder="Type your reply here..."
+              placeholder="Draft your WhatsApp reply here..."
               value={replyMessage}
               onChange={(e) => setReplyMessage(e.target.value)}
             />
             <div className="flex justify-end gap-2">
               <button
                 type="button"
-                onClick={() => setReplyingTo(null)}
+                onClick={() => {
+                  setReplyingTo(null)
+                  setReplyMessage('')
+                }}
                 className="rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
               >
                 Cancel
               </button>
               <button
                 type="button"
-                onClick={() => sendReply(replyingTo)}
-                className="rounded-full bg-blue-500 px-3 py-2 text-xs font-medium text-white hover:bg-blue-600"
+                onClick={() => openWhatsAppReply(replyingTo)}
+                className="rounded-full bg-emerald-600 px-3 py-2 text-xs font-medium text-white hover:bg-emerald-700"
               >
-                Send Reply
+                Open WhatsApp
               </button>
             </div>
           </div>
@@ -251,12 +306,14 @@ const AdminMessagesPage = () => {
               <button
                 type="button"
                 onClick={() => {
-                  setReplyingTo(selectedMessage.email)
+                  setReplyMessage(`Hello ${selectedMessage.name},`)
+                  setReplyingTo(selectedMessage)
                   setSelectedMessage(null)
                 }}
-                className="rounded-full bg-blue-600 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-blue-700 transition"
+                disabled={!normalizeWhatsAppNumber(selectedMessage.phone)}
+                className="rounded-full bg-emerald-600 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-emerald-700 transition disabled:cursor-not-allowed disabled:bg-slate-300"
               >
-                Reply to Message
+                Reply on WhatsApp
               </button>
               <button
                 type="button"

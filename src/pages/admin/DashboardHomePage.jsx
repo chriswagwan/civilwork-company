@@ -1,4 +1,4 @@
-import { ArrowRight, TrendingUp, Briefcase, MessageSquare, Users, Settings } from 'lucide-react'
+import { ArrowRight, TrendingUp, Briefcase, MessageSquare, Users, Settings, ShieldCheck } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import client from '../../api/client.js'
@@ -128,19 +128,38 @@ const DashboardHomePage = () => {
   return (
     <div className="space-y-8">
       {/* Welcome Card */}
-      <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-white p-6 sm:p-8">
-        {/* Decorative elements */}
-        <div className="absolute -top-20 -right-20 w-40 h-40 bg-amber-500/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-indigo-500/5 rounded-full blur-3xl" />
+      <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(135deg,#ffffff_0%,#f8fafc_50%,#eef2f7_100%)] p-6 shadow-sm sm:p-8 lg:p-10">
+        <div className="absolute -left-16 top-10 h-40 w-40 rounded-full bg-amber-400/10 blur-3xl" />
+        <div className="absolute right-0 top-0 h-48 w-48 rounded-full bg-sky-400/10 blur-3xl" />
 
         <div className="relative z-10">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Company Control Center</h2>
-              <p className="text-slate-600 max-w-xl">Manage all your civil works projects, services, team members, and incoming leads from one central hub. Monitor project status, track communications, and stay on top of operations.</p>
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em] text-amber-700">
+              <ShieldCheck size={14} />
+              Admin Workspace
             </div>
-            <div className="hidden sm:flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg flex-shrink-0">
-              <Briefcase size={32} />
+
+            <h2 className="mt-5 max-w-2xl text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
+              Company Control Center
+            </h2>
+
+            <p className="mt-4 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+              Manage projects, services, team members, and incoming leads from one central hub. Stay on top of operations with a cleaner view of activity across the business.
+            </p>
+
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Operations</p>
+                <p className="mt-2 text-sm font-semibold text-slate-900">Project oversight</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Communications</p>
+                <p className="mt-2 text-sm font-semibold text-slate-900">Lead tracking</p>
+              </div>
+              <div className="rounded-2xl border border-slate-200 bg-white/80 px-4 py-4 backdrop-blur-sm">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Team</p>
+                <p className="mt-2 text-sm font-semibold text-slate-900">Resource management</p>
+              </div>
             </div>
           </div>
         </div>

@@ -5,9 +5,11 @@ import PublicLayout from './layouts/PublicLayout.jsx'
 import AboutPage from './pages/AboutPage.jsx'
 import ContactPage from './pages/ContactPage.jsx'
 import HomePage from './pages/HomePage.jsx'
+import ForgotPasswordPage from './pages/ForgotPasswordPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import ProjectsPage from './pages/ProjectsPage.jsx'
+import ResetPasswordPage from './pages/ResetPasswordPage.jsx'
 import ServicesPage from './pages/ServicesPage.jsx'
 import DashboardHomePage from './pages/admin/DashboardHomePage.jsx'
 import AdminMessagesPage from './pages/admin/AdminMessagesPage.jsx'
@@ -27,6 +29,8 @@ const App = () => (
     </Route>
 
     <Route path="/admin/login" element={<LoginPage />} />
+    <Route path="/admin/forgot-password" element={<ForgotPasswordPage />} />
+    <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
 
     <Route
       path="/admin"

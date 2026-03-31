@@ -65,7 +65,7 @@ const ServicesPage = () => {
                     key={service._id}
                     className={`card-panel fade-in-up px-4 sm:px-5 py-5 sm:py-6 ${index ? `stagger-${index}` : ''}`}
                   >
-                    <div className="flex h-10 sm:h-12 w-10 sm:w-12 items-center justify-center rounded-2xl bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-500">
+                    <div className="flex text-amber-700 dark:text-amber-500">
                       <Icon size={20} />
                     </div>
                     <h3 className="mt-4 sm:mt-5 text-base sm:text-xl font-semibold text-slate-900 dark:text-white">{service.name}</h3>

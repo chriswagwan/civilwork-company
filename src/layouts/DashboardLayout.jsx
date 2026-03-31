@@ -1,6 +1,7 @@
 import { LogOut, Menu, X, Home } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, Outlet, useNavigate } from 'react-router-dom'
+import client from '../api/client.js'
 import DashboardSidebar from '../components/admin/DashboardSidebar.jsx'
 import { useAuth } from '../hooks/useAuth.js'
 
@@ -9,6 +10,7 @@ const DashboardLayout = () => {
   const navigate = useNavigate()
   const [sidebarExpanded, setSidebarExpanded] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
 
   // Force light mode for admin panel
   useEffect(() => {
@@ -25,6 +27,37 @@ const DashboardLayout = () => {
         htmlElement.classList.add('dark')
         htmlElement.style.colorScheme = 'dark'
       }
+    }
+  }, [])
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadUnreadCount = async () => {
+      try {
+        const { data } = await client.get('/messages')
+        if (isMounted) {
+          setUnreadCount(data.filter((message) => !message.isRead).length)
+        }
+      } catch {
+        if (isMounted) {
+          setUnreadCount(0)
+        }
+      }
+    }
+
+    const handleMessagesUpdated = () => {
+      loadUnreadCount()
+    }
+
+    loadUnreadCount()
+    const intervalId = window.setInterval(loadUnreadCount, 30000)
+    window.addEventListener('messages:updated', handleMessagesUpdated)
+
+    return () => {
+      isMounted = false
+      window.clearInterval(intervalId)
+      window.removeEventListener('messages:updated', handleMessagesUpdated)
     }
   }, [])
 
@@ -104,6 +137,7 @@ const DashboardLayout = () => {
           <div className="mt-20 p-4">
             <DashboardSidebar
               isExpanded={true}
+              unreadCount={unreadCount}
               onToggleExpand={() => {}}
               onNavigate={() => setSidebarOpen(false)}
             />
@@ -121,6 +155,7 @@ const DashboardLayout = () => {
           <div className="hidden lg:block">
             <DashboardSidebar
               isExpanded={sidebarExpanded}
+              unreadCount={unreadCount}
               onToggleExpand={() => setSidebarExpanded(!sidebarExpanded)}
               onNavigate={() => {}}
             />
