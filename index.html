@@ -15,9 +15,7 @@
           
           let theme = stored
           if (stored !== 'dark' && stored !== 'light') {
-            // Check OS preference
-            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-            theme = prefersDark ? 'dark' : 'light'
+            theme = 'light'
           }
           
           if (theme === 'dark') {

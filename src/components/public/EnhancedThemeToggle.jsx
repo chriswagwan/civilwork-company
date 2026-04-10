@@ -1,5 +1,5 @@
 import { Sun, Moon } from 'lucide-react'
-import { usePublicTheme } from '../../context/PublicThemeContext.jsx'
+import { usePublicTheme } from '../../hooks/usePublicTheme.js'
 
 const EnhancedThemeToggle = ({ compact = false }) => {
   const { isDark, toggleTheme } = usePublicTheme()

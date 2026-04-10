@@ -97,7 +97,7 @@ const AdminMessagesPage = () => {
           setNotification({ show: false, message: '', type: 'info' })
         }, 3000)
       }
-    } catch (error) {
+    } catch {
       // Revert on error
       await loadMessages()
       setNotification({ show: true, message: '✗ Failed to mark as read', type: 'error' })
@@ -183,13 +183,13 @@ const AdminMessagesPage = () => {
 
   return (
     <>
-      <div className="mb-5 flex flex-col gap-3 rounded-[1.75rem] border border-slate-200 bg-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div className="mb-5 flex flex-col gap-3 rounded-[1.75rem] border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Message Filter</p>
-          <p className="mt-1 text-sm text-slate-600">Switch between unread and read messages while keeping the original received timestamp.</p>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Switch between unread and read messages while keeping the original received timestamp.</p>
         </div>
 
-        <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-1">
+        <div className="inline-flex rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 p-1">
           {messageFilters.map((filter) => {
             const count = filter.value === 'unread' ? unreadCount : filter.value === 'read' ? readCount : messages.length
             const isActive = statusFilter === filter.value
@@ -201,8 +201,8 @@ const AdminMessagesPage = () => {
                 onClick={() => setStatusFilter(filter.value)}
                 className={`rounded-full px-3 py-2 text-xs font-semibold transition sm:px-4 ${
                   isActive
-                    ? 'bg-slate-950 text-white shadow-lg shadow-slate-900/15'
-                    : 'text-slate-600 hover:bg-white hover:text-slate-950'
+                    ? 'bg-slate-950 dark:bg-amber-600 text-white shadow-lg shadow-slate-900/15'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-950 dark:hover:text-white'
                 }`}
               >
                 {filter.label} ({count})
@@ -224,29 +224,29 @@ const AdminMessagesPage = () => {
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-lg font-semibold text-slate-950">{message.name}</h3>
+                  <h3 className="text-lg font-semibold text-slate-950 dark:text-white">{message.name}</h3>
                   <span
                     className={`rounded-full px-2 py-1 text-xs font-semibold ${
-                      message.isRead ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                      message.isRead ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400'
                     }`}
                   >
                     {message.isRead ? 'Read' : 'New'}
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-slate-500">
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {message.email}
                   {message.phone ? ` • ${message.phone}` : ''}
                 </p>
-                <p className="text-xs text-slate-500">Received {formatDateTime(message.createdAt)}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Received {formatDateTime(message.createdAt)}</p>
               </div>
             </div>
-            {message.subject ? <p className="text-xs font-semibold text-amber-700">{message.subject}</p> : null}
-            <p className="text-sm leading-6 text-slate-600 line-clamp-2">{message.message}</p>
+            {message.subject ? <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">{message.subject}</p> : null}
+            <p className="text-sm leading-6 text-slate-600 dark:text-slate-400 line-clamp-2">{message.message}</p>
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={() => handleOpenMessage(message)}
-                className="rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 flex-1 sm:flex-initial"
+                className="rounded-full border border-slate-200 dark:border-slate-700 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 flex-1 sm:flex-initial"
               >
                 Read Message
               </button>
@@ -254,7 +254,7 @@ const AdminMessagesPage = () => {
                 <button
                   type="button"
                   onClick={() => markAsRead(message._id)}
-                  className="rounded-full border border-emerald-200 px-3 py-2 text-xs font-medium text-emerald-700 hover:bg-emerald-50 flex-1 sm:flex-initial"
+                  className="rounded-full border border-emerald-200 dark:border-emerald-700 px-3 py-2 text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 flex-1 sm:flex-initial"
                 >
                   Mark as Read
                 </button>
@@ -266,7 +266,7 @@ const AdminMessagesPage = () => {
                   setReplyingTo(message)
                 }}
                 disabled={!normalizeWhatsAppNumber(message.phone)}
-                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-emerald-500 px-3 py-2 text-xs font-medium text-emerald-700 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:border-slate-200 disabled:text-slate-400 disabled:hover:bg-transparent sm:flex-initial"
+                className="flex flex-1 items-center justify-center gap-2 rounded-full border border-emerald-500 dark:border-emerald-600 px-3 py-2 text-xs font-medium text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 disabled:cursor-not-allowed disabled:border-slate-200 dark:disabled:border-slate-700 disabled:text-slate-400 disabled:hover:bg-transparent sm:flex-initial"
               >
                 <MessageCircle size={14} />
                 WhatsApp Reply
@@ -279,14 +279,14 @@ const AdminMessagesPage = () => {
 
       {replyingTo && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-40">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-slate-950 mb-2">Reply on WhatsApp</h3>
-            <p className="mb-4 text-sm text-slate-500">
+          <div className="bg-white dark:bg-slate-900 rounded-lg p-6 w-full max-w-md">
+            <h3 className="text-lg font-semibold text-slate-950 dark:text-white mb-2">Reply on WhatsApp</h3>
+            <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
               Opening chat for {replyingTo.name}
               {replyingTo.phone ? ` • ${replyingTo.phone}` : ''}
             </p>
             <textarea
-              className="w-full border border-slate-300 rounded-lg p-2 mb-4"
+              className="w-full border border-slate-300 dark:border-slate-700 rounded-lg p-2 mb-4 bg-white dark:bg-slate-800 dark:text-white"
               rows="4"
               placeholder="Draft your WhatsApp reply here..."
               value={replyMessage}
@@ -299,7 +299,7 @@ const AdminMessagesPage = () => {
                   setReplyingTo(null)
                   setReplyMessage('')
                 }}
-                className="rounded-full border border-slate-200 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                className="rounded-full border border-slate-200 dark:border-slate-700 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
               >
                 Cancel
               </button>
@@ -318,16 +318,16 @@ const AdminMessagesPage = () => {
       {/* Full Message Modal */}
       {selectedMessage && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full my-8">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-2xl w-full my-8">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-slate-200 rounded-t-3xl px-6 sm:px-8 py-4 sm:py-6 flex items-start justify-between gap-4">
+            <div className="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 rounded-t-3xl px-6 sm:px-8 py-4 sm:py-6 flex items-start justify-between gap-4">
               <div className="flex-grow min-w-0">
-                <h2 className="text-xl sm:text-2xl font-semibold text-slate-950">Message from {selectedMessage.name}</h2>
-                <p className="mt-2 text-xs sm:text-sm text-slate-500">{selectedMessage.email}</p>
+                <h2 className="text-xl sm:text-2xl font-semibold text-slate-950 dark:text-white">Message from {selectedMessage.name}</h2>
+                <p className="mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">{selectedMessage.email}</p>
               </div>
               <button
                 onClick={() => setSelectedMessage(null)}
-                className="flex-shrink-0 rounded-full border border-slate-200 p-2 text-slate-600 hover:bg-slate-50 transition"
+                className="flex-shrink-0 rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
                 title="Close modal"
               >
                 <X size={20} />
@@ -337,35 +337,35 @@ const AdminMessagesPage = () => {
             {/* Modal Body */}
             <div className="px-6 sm:px-8 py-6 overflow-y-auto max-h-[calc(100vh-200px)] space-y-4">
               <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-[0.1em]">Received</p>
-                <p className="text-sm text-slate-600">{formatDateTime(selectedMessage.createdAt)}</p>
+                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-[0.1em]">Received</p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">{formatDateTime(selectedMessage.createdAt)}</p>
               </div>
 
               {selectedMessage.phone && (
                 <div>
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-[0.1em]">Phone</p>
-                  <p className="text-sm text-slate-600">{selectedMessage.phone}</p>
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-[0.1em]">Phone</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-300">{selectedMessage.phone}</p>
                 </div>
               )}
 
               {selectedMessage.subject && (
                 <div>
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-[0.1em]">Subject</p>
-                  <p className="text-sm font-medium text-slate-950">{selectedMessage.subject}</p>
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-[0.1em]">Subject</p>
+                  <p className="text-sm font-medium text-slate-950 dark:text-white">{selectedMessage.subject}</p>
                 </div>
               )}
 
               <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-[0.1em] mb-2">Message</p>
-                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200">
-                  <p className="text-sm leading-7 text-slate-700 whitespace-pre-wrap">{selectedMessage.message}</p>
+                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-[0.1em] mb-2">Message</p>
+                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+                  <p className="text-sm leading-7 text-slate-700 dark:text-slate-300 whitespace-pre-wrap">{selectedMessage.message}</p>
                 </div>
               </div>
 
               <div>
                 <span
                   className={`inline-block rounded-full px-3 py-1.5 text-xs font-semibold ${
-                    selectedMessage.isRead ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                    selectedMessage.isRead ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400' : 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400'
                   }`}
                 >
                   {selectedMessage.isRead ? 'Read' : 'New'}
@@ -374,7 +374,7 @@ const AdminMessagesPage = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="border-t border-slate-200 rounded-b-3xl px-6 sm:px-8 py-4 bg-slate-50 flex flex-col sm:flex-row gap-3 justify-end">
+            <div className="border-t border-slate-200 dark:border-slate-700 rounded-b-3xl px-6 sm:px-8 py-4 bg-slate-50 dark:bg-slate-800/50 flex flex-col sm:flex-row gap-3 justify-end">
               {!selectedMessage.isRead && (
                 <button
                   type="button"
@@ -382,7 +382,7 @@ const AdminMessagesPage = () => {
                     markAsRead(selectedMessage._id)
                     setSelectedMessage(null)
                   }}
-                  className="rounded-full border border-emerald-200 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition"
+                  className="rounded-full border border-emerald-200 dark:border-emerald-700 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition"
                 >
                   Mark as Read
                 </button>
@@ -402,7 +402,7 @@ const AdminMessagesPage = () => {
               <button
                 type="button"
                 onClick={() => setSelectedMessage(null)}
-                className="rounded-full border border-slate-200 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition"
+                className="rounded-full border border-slate-200 dark:border-slate-700 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 Close
               </button>
@@ -412,11 +412,11 @@ const AdminMessagesPage = () => {
       )}
 
       {filteredMessages.length > 0 && totalPages > 1 && (
-        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-slate-200 bg-gradient-to-r from-white via-slate-50 to-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div className="flex flex-col gap-4 rounded-[1.75rem] border border-slate-200 dark:border-slate-700 bg-gradient-to-r from-white via-slate-50 to-white dark:from-slate-900 dark:via-slate-800/50 dark:to-slate-900 px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">Pagination</p>
-            <p className="mt-1 text-sm font-medium text-slate-600">
-              Page <span className="text-slate-950">{currentPage}</span> of <span className="text-slate-950">{totalPages}</span>
+            <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-400">
+              Page <span className="text-slate-950 dark:text-white">{currentPage}</span> of <span className="text-slate-950 dark:text-white">{totalPages}</span>
             </p>
           </div>
 
@@ -424,7 +424,7 @@ const AdminMessagesPage = () => {
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow disabled:translate-y-0 disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-100 disabled:text-slate-400 disabled:shadow-none sm:px-5 sm:text-sm"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-2.5 text-xs font-semibold text-slate-700 dark:text-slate-300 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700 hover:shadow disabled:translate-y-0 disabled:cursor-not-allowed disabled:border-slate-200 dark:disabled:border-slate-700 disabled:bg-slate-100 dark:disabled:bg-slate-800 disabled:text-slate-400 disabled:shadow-none sm:px-5 sm:text-sm"
             >
               <ChevronLeft size={16} />
               Previous
@@ -433,7 +433,7 @@ const AdminMessagesPage = () => {
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-xl disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-100 disabled:shadow-none sm:px-5 sm:text-sm"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 dark:bg-amber-600 px-4 py-2.5 text-xs font-semibold text-white shadow-lg shadow-slate-900/20 transition hover:-translate-y-0.5 hover:bg-slate-800 dark:hover:bg-amber-500 hover:shadow-xl disabled:translate-y-0 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-100 disabled:shadow-none sm:px-5 sm:text-sm"
             >
               Next
               <ChevronRight size={16} />

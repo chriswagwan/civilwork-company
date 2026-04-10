@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import client from '../api/client.js'
 import EmptyState from '../components/common/EmptyState.jsx'
@@ -8,7 +8,7 @@ import PageHero from '../components/layout/PageHero.jsx'
 import { formatDate } from '../utils/formatters.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { t } from '../utils/translations.js'
-import { usePublicTheme } from '../context/PublicThemeContext.jsx'
+import { usePublicTheme } from '../hooks/usePublicTheme.js'
 
 const AutoSlider = ({ images, alt }) => {
   const [index, setIndex] = useState(0)
@@ -135,7 +135,7 @@ const ProjectsPage = () => {
                   setCurrentImageIndex(0)
                 }}>
                   <AutoSlider images={project.images || []} alt={project.title} />
-                  <div className="space-y-2 sm:space-y-3 flex-grow px-4 sm:px-6 py-4 sm:py-6 flex flex-col">
+                  <div className="space-y-2 sm:space-y-3 flex-grow px-4 sm:px-6 py-4 sm:py-6 flex flex-col min-w-0 overflow-hidden">
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <div className="flex-grow min-w-0">
                         <p className="text-xs font-medium text-slate-500 dark:text-slate-500">{project.category}</p>
@@ -146,7 +146,7 @@ const ProjectsPage = () => {
                       </div>
                     </div>
                     <p className="text-xs font-semibold uppercase tracking-[0.15em] text-amber-700 dark:text-amber-600">{project.location}</p>
-                    <div>
+                    <div className="min-w-0 overflow-hidden">
                       <p className="text-xs sm:text-sm leading-5 sm:leading-6 text-slate-600 dark:text-slate-400 line-clamp-3">
                         {project.description}
                       </p>
@@ -154,6 +154,9 @@ const ProjectsPage = () => {
                     {project.completionDate ? (
                       <p className="text-xs text-slate-500 dark:text-slate-500 mt-auto">Completion: {formatDate(project.completionDate)}</p>
                     ) : null}
+                    <div className="flex items-center justify-center mt-auto pt-2">
+                      <ChevronDown size={20} className="text-slate-400 dark:text-slate-500 animate-bounce" />
+                    </div>
                   </div>
                 </article>
               ))}
@@ -292,9 +295,9 @@ const ProjectsPage = () => {
                 )}
 
                 <div className="mt-6 grid gap-5 lg:grid-cols-[minmax(0,1fr)_280px]">
-                  <div className={`rounded-[1.75rem] border px-5 py-5 shadow-sm ${isDark ? 'border-slate-800 bg-slate-900/72' : 'border-slate-200 bg-white'}`}>
+                  <div className={`rounded-[1.75rem] border px-5 py-5 shadow-sm min-w-0 overflow-hidden ${isDark ? 'border-slate-800 bg-slate-900/72' : 'border-slate-200 bg-white'}`}>
                     <h3 className={`mb-3 text-sm font-semibold uppercase tracking-[0.18em] ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Project Overview</h3>
-                    <p className={`whitespace-pre-wrap text-sm leading-7 ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
+                    <p className={`whitespace-pre-wrap break-words overflow-wrap-anywhere text-sm leading-7 ${isDark ? 'text-slate-300' : 'text-slate-600'}`} style={{ overflowWrap: 'anywhere', wordBreak: 'break-word' }}>
                       {selectedProject.description}
                     </p>
                   </div>

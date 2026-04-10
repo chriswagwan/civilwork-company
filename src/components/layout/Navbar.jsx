@@ -23,23 +23,27 @@ const navClass = ({ isActive }) =>
   }`
 
 // Mobile Navigation Link Component
-const MobileNavLink = ({ icon: Icon, label, to, isActive, onClick }) => (
-  <NavLink
-    to={to}
-    onClick={onClick}
-    className={({ isActive }) =>
-      `group flex items-center gap-4 rounded-2xl px-5 py-4 transition-all duration-300 ${
-        isActive
-          ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/10 border border-amber-500/50 text-amber-700'
-          : 'text-slate-700 hover:bg-slate-100'
-      }`
-    }
-  >
-    <Icon className="w-6 h-6 flex-shrink-0 group-hover:scale-110 transition-transform" />
-    <span className="font-semibold text-base">{label}</span>
-    <ArrowRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-  </NavLink>
-)
+const MobileNavLink = ({ icon, label, to, onClick }) => {
+  const IconComponent = icon
+
+  return (
+    <NavLink
+      to={to}
+      onClick={onClick}
+      className={({ isActive }) =>
+        `group flex items-center gap-4 rounded-2xl px-5 py-4 transition-all duration-300 ${
+          isActive
+            ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/10 border border-amber-500/50 text-amber-700 dark:text-amber-400'
+            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+        }`
+      }
+    >
+      <IconComponent className="w-6 h-6 flex-shrink-0 group-hover:scale-110 transition-transform" />
+      <span className="font-semibold text-base">{label}</span>
+      <ArrowRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+    </NavLink>
+  )
+}
 
 const Navbar = () => {
   const [open, setOpen] = useState(false)
@@ -114,14 +118,17 @@ const Navbar = () => {
           ) : null}
         </div>
 
-        <button
-          type="button"
-          className="rounded-xl border border-slate-200 p-2.5 sm:p-3 lg:hidden hover:bg-slate-50 transition"
-          onClick={() => setOpen((value) => !value)}
-          aria-label="Toggle navigation"
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <EnhancedThemeToggle />
+          <button
+            type="button"
+            className="rounded-xl border border-slate-200 dark:border-slate-700 p-2.5 sm:p-3 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+            onClick={() => setOpen((value) => !value)}
+            aria-label="Toggle navigation"
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu Overlay */}
@@ -135,12 +142,12 @@ const Navbar = () => {
 
       {/* Mobile Slide-in Menu */}
       <nav
-        className={`fixed right-0 top-0 z-50 h-screen w-full max-w-sm bg-white shadow-2xl transform transition-transform duration-300 ease-out overflow-y-auto lg:hidden ${
+        className={`fixed right-0 top-0 z-50 h-screen w-full max-w-sm bg-white dark:bg-slate-900 shadow-2xl transform transition-transform duration-300 ease-out overflow-y-auto lg:hidden ${
           open ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Menu Header with Logo and Close Button */}
-        <div className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur-md px-5 py-4">
+        <div className="sticky top-0 z-50 border-b border-slate-100 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-5 py-4">
           <div className="flex items-center justify-between gap-4">
             <Link to="/" onClick={handleNavClick} className="flex items-center gap-2 flex-shrink-0">
               <img src="/icon.png" alt="Company Logo" className="h-10 w-auto" />
@@ -150,17 +157,17 @@ const Navbar = () => {
             </Link>
             <button
               onClick={() => setOpen(false)}
-              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-100 transition-colors"
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               aria-label="Close menu"
             >
-              <X size={24} className="text-slate-700" />
+              <X size={24} className="text-slate-700 dark:text-slate-300" />
             </button>
           </div>
         </div>
 
         {/* Main Navigation Links */}
         <div className="px-4 py-6 space-y-2">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 px-1 mb-4">Navigation</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 px-1 mb-4">Navigation</p>
           {navItems.map((item) => (
             <MobileNavLink
               key={item.to}
@@ -173,11 +180,11 @@ const Navbar = () => {
         </div>
 
         {/* Divider */}
-        <div className="mx-4 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+        <div className="mx-4 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent" />
 
         {/* Settings Section */}
         <div className="px-4 py-6 space-y-3">
-          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 px-1 mb-4">Settings</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 px-1 mb-4">Settings</p>
 
           {/* Language Selector */}
           <button
@@ -200,31 +207,31 @@ const Navbar = () => {
         </div>
 
         {/* Divider */}
-        <div className="mx-4 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+        <div className="mx-4 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent" />
 
         {/* Authentication Section */}
         {isAuthenticated ? (
           <div className="px-4 py-6 space-y-3">
-            <p className="text-xs font-bold uppercase tracking-widest text-slate-400 px-1 mb-4">Account</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 px-1 mb-4">Account</p>
 
             {user?.role === 'admin' && (
               <Link
                 to="/admin/dashboard"
                 onClick={handleNavClick}
-                className="group flex items-center gap-4 rounded-2xl px-5 py-4 bg-slate-50 hover:bg-slate-100 transition-all duration-300 border border-slate-200"
+                className="group flex items-center gap-4 rounded-2xl px-5 py-4 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 border border-slate-200 dark:border-slate-700"
               >
                 <ShieldCheck className="w-6 h-6 flex-shrink-0 text-indigo-600 group-hover:scale-110 transition-transform" />
-                <span className="font-semibold text-base text-slate-700 flex-1 text-left">Admin Dashboard</span>
+                <span className="font-semibold text-base text-slate-700 dark:text-slate-200 flex-1 text-left">Admin Dashboard</span>
                 <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </Link>
             )}
 
             <button
               onClick={handleLogout}
-              className="group w-full flex items-center gap-4 rounded-2xl px-5 py-4 bg-red-50 hover:bg-red-100 transition-all duration-300 border border-red-200"
+              className="group w-full flex items-center gap-4 rounded-2xl px-5 py-4 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all duration-300 border border-red-200 dark:border-red-800"
             >
-              <LogOut className="w-6 h-6 flex-shrink-0 text-red-600 group-hover:scale-110 transition-transform" />
-              <span className="font-semibold text-base text-red-600 flex-1 text-left">Logout</span>
+              <LogOut className="w-6 h-6 flex-shrink-0 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform" />
+              <span className="font-semibold text-base text-red-600 dark:text-red-400 flex-1 text-left">Logout</span>
             </button>
           </div>
         ) : null}

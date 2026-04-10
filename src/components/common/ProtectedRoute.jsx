@@ -5,6 +5,12 @@ const ProtectedRoute = ({ children, roles = [] }) => {
   const { isAuthenticated, user } = useAuth()
   const location = useLocation()
 
+  // Require admin key verification for admin routes
+  const adminAccessGranted = sessionStorage.getItem('adminAccessGranted')
+  if (roles.includes('admin') && !adminAccessGranted) {
+    return <Navigate to="/" replace />
+  }
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace state={{ from: location }} />
   }

@@ -1,6 +1,7 @@
 import { Mail, Phone, MapPin, ArrowUpRight, Lock } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useSiteSettings } from '../../hooks/useSiteSettings.js'
+import SecretAdminAccess from '../adminAccess/SecretAdminAccess.jsx'
 
 const Footer = () => {
   const { settings } = useSiteSettings()
@@ -73,14 +74,15 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
           <div className="flex items-center gap-3">
-            <Link
-              to="/admin/login"
-              className="text-slate-500 hover:text-indigo-500 transition-colors duration-300 p-2 hover:bg-slate-800/80 rounded-xl"
-              title="Admin Portal"
-              aria-label="Admin Portal"
-            >
-              <Lock size={18} />
-            </Link>
+            <SecretAdminAccess>
+              <span
+                className="text-slate-500 hover:text-indigo-500 transition-colors duration-300 p-2 hover:bg-slate-800/80 rounded-xl cursor-pointer inline-flex"
+                title="Admin Portal"
+                aria-label="Admin Portal"
+              >
+                <Lock size={18} />
+              </span>
+            </SecretAdminAccess>
             <p className="text-xs sm:text-sm text-slate-500">
               © {new Date().getFullYear()} {settings.companyName}. All rights reserved.
             </p>

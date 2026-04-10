@@ -1,9 +1,17 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { AlertCircle, ArrowLeft, CheckCircle2, Copy, Mail, ShieldCheck } from 'lucide-react'
 import client from '../api/client.js'
 
 const ForgotPasswordPage = () => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const adminAccessGranted = sessionStorage.getItem('adminAccessGranted')
+    if (!adminAccessGranted) {
+      navigate('/', { replace: true })
+    }
+  }, [navigate])
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')

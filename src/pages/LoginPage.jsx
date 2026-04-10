@@ -12,6 +12,13 @@ const LoginPage = () => {
   const location = useLocation()
 
   useEffect(() => {
+    const granted = sessionStorage.getItem('adminAccessGranted')
+    if (!granted) {
+      navigate('/', { replace: true })
+    }
+  }, [navigate])
+
+  useEffect(() => {
     const htmlElement = document.documentElement
     const wasDark = htmlElement.classList.contains('dark')
 

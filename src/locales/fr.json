@@ -22,7 +22,12 @@
     "point3": "Travail de haute qualité avec des contrôles HSE solides",
     "what_we_do": "Ce Que Nous Faisons",
     "what_we_do_title": "Services de travaux civils bâtis autour de la performance sur site",
-    "what_we_do_copy": "Des terrassements et constructions routières à la livraison de bâtiments en béton armé et aux paquets de drainage, nos équipes sont prêtes pour une exécution sûre et de haute qualité."
+    "what_we_do_copy": "Des terrassements et constructions routières à la livraison de bâtiments en béton armé et aux paquets de drainage, nos équipes sont prêtes pour une exécution sûre et de haute qualité.",
+    "get_quote": "Obtenir un Devis",
+    "featured_eyebrow": "Travaux en Vedette",
+    "featured_title": "Projets récents qui façonnent de meilleures infrastructures",
+    "featured_copy": "Un aperçu des projets de transport, de bâtiment et de services publics actuellement dans notre portefeuille.",
+    "see_portfolio": "Voir le portefeuille complet"
   },
   "services": {
     "eyebrow": "Services",

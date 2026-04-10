@@ -6,7 +6,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner.jsx'
 import PageHero from '../components/layout/PageHero.jsx'
 import { useSiteSettings } from '../hooks/useSiteSettings.js'
 import { useLanguage } from '../hooks/useLanguage.js'
-import { usePublicTheme } from '../context/PublicThemeContext.jsx'
+import { usePublicTheme } from '../hooks/usePublicTheme.js'
 import { t } from '../utils/translations.js'
 
 const initialForm = {

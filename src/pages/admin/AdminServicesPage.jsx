@@ -130,13 +130,13 @@ const AdminServicesPage = () => {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-950">Manage Services</h2>
-          <p className="mt-1 text-sm text-slate-500">Create and manage the public services catalog shown on the website.</p>
+          <h2 className="text-2xl font-semibold text-slate-950 dark:text-white">Manage Services</h2>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Create and manage the public services catalog shown on the website.</p>
         </div>
         <button
           type="button"
           onClick={() => setShowForm(!showForm)}
-          className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+          className="rounded-full bg-slate-950 dark:bg-amber-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:hover:bg-amber-500"
         >
           {showForm ? 'Hide Form' : '+ Add Service'}
         </button>
@@ -146,11 +146,11 @@ const AdminServicesPage = () => {
         <form onSubmit={handleSubmit} className="card-panel space-y-5 px-6 py-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-semibold text-slate-950">{editingId ? 'Edit Service' : 'Add Service'}</h2>
-              <p className="mt-1 text-sm text-slate-500">Control the public services catalog shown on the website.</p>
+              <h2 className="text-2xl font-semibold text-slate-950 dark:text-white">{editingId ? 'Edit Service' : 'Add Service'}</h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Control the public services catalog shown on the website.</p>
             </div>
             {editingId ? (
-              <button type="button" onClick={resetForm} className="rounded-full border border-slate-200 px-4 py-2 text-sm">
+              <button type="button" onClick={resetForm} className="rounded-full border border-slate-200 dark:border-slate-700 px-4 py-2 text-sm dark:text-slate-300">
                 Cancel Edit
               </button>
             ) : null}
@@ -158,24 +158,24 @@ const AdminServicesPage = () => {
 
         <div className="grid gap-5 md:grid-cols-2">
           <label className="space-y-2">
-            <span className="text-sm font-medium text-slate-700">Service Name</span>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Service Name</span>
             <input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-amber-500"
+              className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 outline-none focus:border-amber-500 bg-white dark:bg-slate-800 dark:text-white"
               required
             />
           </label>
 
           <label className="space-y-2">
-            <span className="text-sm font-medium text-slate-700">Icon</span>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Icon</span>
             <select
               name="icon"
               value={form.icon}
               onChange={handleChange}
-              className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-amber-500"
+              className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 outline-none focus:border-amber-500 bg-white dark:bg-slate-800 dark:text-white"
             >
               <option value="building-2">Building</option>
               <option value="route">Route</option>
@@ -185,33 +185,33 @@ const AdminServicesPage = () => {
         </div>
 
         <label className="block space-y-2">
-          <span className="text-sm font-medium text-slate-700">Description</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Description</span>
           <textarea
             name="description"
             value={form.description}
             onChange={handleChange}
             rows="4"
-            className="w-full rounded-3xl border border-slate-200 px-4 py-3 outline-none focus:border-amber-500"
+            className="w-full rounded-3xl border border-slate-200 dark:border-slate-700 px-4 py-3 outline-none focus:border-amber-500 bg-white dark:bg-slate-800 dark:text-white"
             required
           />
         </label>
 
         <label className="block space-y-2">
-          <span className="text-sm font-medium text-slate-700">Highlights</span>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Highlights</span>
           <input
             type="text"
             name="highlightsText"
             value={form.highlightsText}
             onChange={handleChange}
             placeholder="Earthworks, Asphalt paving, Site grading"
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-amber-500"
+            className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 outline-none focus:border-amber-500 bg-white dark:bg-slate-800 dark:text-white"
           />
         </label>
 
-        {error ? <div className="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
-        {success ? <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{success}</div> : null}
+        {error ? <div className="rounded-2xl bg-rose-50 dark:bg-rose-900/30 px-4 py-3 text-sm text-rose-700 dark:text-rose-400">{error}</div> : null}
+        {success ? <div className="rounded-2xl bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">{success}</div> : null}
 
-        <button type="submit" className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white">
+        <button type="submit" className="rounded-full bg-slate-950 dark:bg-amber-600 px-5 py-3 text-sm font-semibold text-white dark:hover:bg-amber-500">
           {editingId ? 'Update Service' : 'Create Service'}
         </button>
         </form>
@@ -228,7 +228,7 @@ const AdminServicesPage = () => {
                   placeholder="Search services by name, description, or highlights..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 outline-none focus:border-amber-500"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-12 pr-4 py-3 outline-none focus:border-amber-500 dark:text-white"
                 />
               </div>
             </div>
@@ -243,25 +243,25 @@ const AdminServicesPage = () => {
               <div className="grid gap-4 md:grid-cols-2">
                 {paginatedServices.map((service) => (
               <div key={service._id} className="card-panel flex flex-col gap-3 px-6 py-4">
-                <h3 className="text-lg font-semibold text-slate-950">{service.name}</h3>
-                <p className="text-sm leading-6 text-slate-600">{service.description}</p>
+                <h3 className="text-lg font-semibold text-slate-950 dark:text-white">{service.name}</h3>
+                <p className="text-sm leading-6 text-slate-600 dark:text-slate-400">{service.description}</p>
                 {service.highlights?.length ? (
                   <div className="flex flex-wrap gap-2">
                     {service.highlights.map((highlight) => (
-                      <span key={highlight} className="rounded-full bg-amber-50 px-2 py-1 text-xs text-amber-800">
+                      <span key={highlight} className="rounded-full bg-amber-50 dark:bg-amber-900/30 px-2 py-1 text-xs text-amber-800 dark:text-amber-400">
                         {highlight}
                       </span>
                     ))}
                   </div>
                 ) : null}
                 <div className="flex gap-3 mt-2">
-                  <button type="button" onClick={() => handleEdit(service)} className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600" title="Edit service">
+                  <button type="button" onClick={() => handleEdit(service)} className="rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 transition hover:border-amber-300 dark:hover:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:text-amber-600 dark:hover:text-amber-400" title="Edit service">
                     <Pencil size={16} />
                   </button>
                   <button
                     type="button"
                     onClick={() => handleDelete(service._id)}
-                    className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-rose-300 hover:bg-rose-50 hover:text-rose-600"
+                    className="rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 transition hover:border-rose-300 dark:hover:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-900/30 hover:text-rose-600 dark:hover:text-rose-400"
                     title="Delete service"
                   >
                     <Trash2 size={16} />
@@ -272,22 +272,22 @@ const AdminServicesPage = () => {
               </div>
 
               {totalPages > 1 && (
-                <div className="flex items-center justify-between rounded-2xl border border-slate-200 px-6 py-4">
-                  <span className="text-sm text-slate-600">
+                <div className="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 px-6 py-4">
+                  <span className="text-sm text-slate-600 dark:text-slate-400">
                     Page {currentPage} of {totalPages}
                   </span>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="rounded-full border border-slate-200 p-2 text-slate-600 disabled:opacity-50 transition hover:bg-slate-50"
+                      className="rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 disabled:opacity-50 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                     >
                       <ChevronLeft size={18} />
                     </button>
                     <button
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className="rounded-full border border-slate-200 p-2 text-slate-600 disabled:opacity-50 transition hover:bg-slate-50"
+                      className="rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 disabled:opacity-50 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                     >
                       <ChevronRight size={18} />
                     </button>

@@ -16,6 +16,7 @@ import AdminMessagesPage from './pages/admin/AdminMessagesPage.jsx'
 import AdminProjectsPage from './pages/admin/AdminProjectsPage.jsx'
 import AdminServicesPage from './pages/admin/AdminServicesPage.jsx'
 import AdminSettingsPage from './pages/admin/AdminSettingsPage.jsx'
+import AdminSlideshowPage from './pages/admin/AdminSlideshowPage.jsx'
 import AdminStaffPage from './pages/admin/AdminStaffPage.jsx'
 
 const App = () => (
@@ -45,6 +46,7 @@ const App = () => (
       <Route path="projects" element={<AdminProjectsPage />} />
       <Route path="services" element={<AdminServicesPage />} />
       <Route path="staff" element={<AdminStaffPage />} />
+      <Route path="slideshow" element={<AdminSlideshowPage />} />
       <Route path="messages" element={<AdminMessagesPage />} />
       <Route path="settings" element={<AdminSettingsPage />} />
     </Route>

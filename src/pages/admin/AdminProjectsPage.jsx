@@ -36,7 +36,6 @@ const AdminProjectsPage = () => {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedProject, setSelectedProject] = useState(null)
@@ -113,7 +112,6 @@ const AdminProjectsPage = () => {
       ...current,
       [name]: type === 'checkbox' ? checked : value,
     }))
-    setSuccess('')
   }
 
   const handleImageChange = (event) => {
@@ -196,7 +194,6 @@ const AdminProjectsPage = () => {
     event.preventDefault()
     setSaving(true)
     setError('')
-    setSuccess('')
 
     try {
       const payload = new FormData()
@@ -257,7 +254,7 @@ const AdminProjectsPage = () => {
 
   if (loading) {
     return (
-      <div className="card-panel px-6 py-14 bg-white">
+      <div className="card-panel px-6 py-14 bg-white dark:bg-slate-900">
         <LoadingSpinner label="Loading projects..." />
       </div>
     )
@@ -293,27 +290,27 @@ const AdminProjectsPage = () => {
 
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-950">Manage Projects</h2>
-          <p className="mt-1 text-sm text-slate-500">View, edit, and create projects with image uploads and status tracking.</p>
+          <h2 className="text-2xl font-semibold text-slate-950 dark:text-white">Manage Projects</h2>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">View, edit, and create projects with image uploads and status tracking.</p>
         </div>
         <button
           type="button"
           onClick={() => setShowForm(!showForm)}
-          className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+          className="rounded-full bg-slate-950 dark:bg-amber-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 dark:hover:bg-amber-500"
         >
           {showForm ? 'Hide Form' : '+ Add Project'}
         </button>
       </div>
 
       {showForm ? (
-        <form onSubmit={handleSubmit} className="card-panel space-y-5 px-6 py-6 bg-white">
+        <form onSubmit={handleSubmit} className="card-panel space-y-5 px-6 py-6 bg-white dark:bg-slate-900">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-semibold text-slate-950">{editingId ? 'Edit Project' : 'Add Project'}</h2>
-              <p className="mt-1 text-sm text-slate-500">Projects support image upload, featured states, and live status tracking.</p>
+              <h2 className="text-2xl font-semibold text-slate-950 dark:text-white">{editingId ? 'Edit Project' : 'Add Project'}</h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Projects support image upload, featured states, and live status tracking.</p>
             </div>
             {editingId ? (
-              <button type="button" onClick={resetForm} className="rounded-full border border-slate-200 px-4 py-2 text-sm">
+              <button type="button" onClick={resetForm} className="rounded-full border border-slate-200 dark:border-slate-700 px-4 py-2 text-sm dark:text-slate-300">
                 Cancel Edit
               </button>
             ) : null}
@@ -327,13 +324,13 @@ const AdminProjectsPage = () => {
               ['category', 'Category'],
             ].map(([name, label]) => (
               <label key={name} className="space-y-2">
-                <span className="text-sm font-medium text-slate-700">{label}</span>
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">{label}</span>
                 <input
                   type="text"
                   name={name}
                   value={form[name]}
                   onChange={handleChange}
-                  className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-amber-500 bg-white text-slate-950"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 outline-none focus:border-amber-500 bg-white dark:bg-slate-800 text-slate-950 dark:text-white"
                   required
                 />
               </label>
@@ -342,12 +339,12 @@ const AdminProjectsPage = () => {
 
           <div className="grid gap-5 md:grid-cols-3">
             <label className="space-y-2">
-              <span className="text-sm font-medium text-slate-700">Status</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Status</span>
               <select
                 name="status"
                 value={form.status}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-amber-500 bg-white text-slate-950"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 outline-none focus:border-amber-500 bg-white dark:bg-slate-800 text-slate-950 dark:text-white"
               >
                 <option value="planned">Planned</option>
                 <option value="ongoing">Ongoing</option>
@@ -355,16 +352,16 @@ const AdminProjectsPage = () => {
               </select>
             </label>
             <label className="space-y-2">
-              <span className="text-sm font-medium text-slate-700">Completion Date</span>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Completion Date</span>
               <input
                 type="date"
                 name="completionDate"
                 value={form.completionDate}
                 onChange={handleChange}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-amber-500 bg-white text-slate-950"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 px-4 py-3 outline-none focus:border-amber-500 bg-white dark:bg-slate-800 text-slate-950 dark:text-white"
               />
             </label>
-            <label className="flex items-center gap-3 pt-8 text-sm font-medium text-slate-700">
+            <label className="flex items-center gap-3 pt-8 text-sm font-medium text-slate-700 dark:text-slate-300">
               <input
                 type="checkbox"
                 name="featured"
@@ -377,33 +374,33 @@ const AdminProjectsPage = () => {
           </div>
 
           <label className="block space-y-2">
-            <span className="text-sm font-medium text-slate-700">Description</span>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Description</span>
             <textarea
               name="description"
               value={form.description}
               onChange={handleChange}
               rows="5"
-              className="w-full rounded-3xl border border-slate-200 px-4 py-3 outline-none focus:border-amber-500 bg-white text-slate-950"
+              className="w-full rounded-3xl border border-slate-200 dark:border-slate-700 px-4 py-3 outline-none focus:border-amber-500 bg-white dark:bg-slate-800 text-slate-950 dark:text-white"
               required
             />
           </label>
 
           <label className="block space-y-2">
-            <span className="text-sm font-medium text-slate-700">Project Images</span>
-            <p className="text-xs text-slate-500">Upload one or multiple images. You can add images to existing projects when editing.</p>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Project Images</span>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Upload one or multiple images. You can add images to existing projects when editing.</p>
             <input
               type="file"
               accept="image/*"
               multiple
               onChange={handleImageChange}
-              className="w-full rounded-2xl border border-dashed border-slate-300 px-4 py-4"
+              className="w-full rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 px-4 py-4 dark:text-slate-300"
             />
           </label>
 
           {/* Display existing images */}
           {form.existingImages.length > 0 && (
             <div>
-              <h4 className="text-sm font-medium text-slate-700 mb-3">Existing Images (drag to reorder)</h4>
+              <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Existing Images (drag to reorder)</h4>
               <div className="flex flex-wrap gap-3">
                 {form.existingImages.map((image, index) => (
                   <div
@@ -444,7 +441,7 @@ const AdminProjectsPage = () => {
           {/* Display newly selected images */}
           {filePreviews.length > 0 && (
             <div>
-              <h4 className="text-sm font-medium text-slate-700 mb-3">New Images to Upload ({filePreviews.length}) - drag to reorder</h4>
+              <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">New Images to Upload ({filePreviews.length}) - drag to reorder</h4>
               <div className="flex flex-wrap gap-3">
                 {filePreviews.map((preview, index) => (
                   <div
@@ -479,9 +476,9 @@ const AdminProjectsPage = () => {
             </div>
           )}
 
-          {error ? <div className="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{error}</div> : null}
+          {error ? <div className="rounded-2xl bg-rose-50 dark:bg-rose-900/30 px-4 py-3 text-sm text-rose-700 dark:text-rose-400">{error}</div> : null}
 
-          <button type="submit" disabled={saving} className="rounded-full bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 transition">
+          <button type="submit" disabled={saving} className="rounded-full bg-slate-950 dark:bg-amber-600 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800 dark:hover:bg-amber-500 transition">
             {saving ? 'Saving...' : editingId ? 'Update Project' : 'Create Project'}
           </button>
         </form>
@@ -490,7 +487,7 @@ const AdminProjectsPage = () => {
       {!showForm && (
         <>
           {projects.length > 0 && (
-            <div className="card-panel space-y-4 bg-white">
+            <div className="card-panel space-y-4 bg-white dark:bg-slate-900">
               <div className="relative">
                 <Search className="absolute left-4 top-3.5 text-slate-400" size={20} />
                 <input
@@ -498,7 +495,7 @@ const AdminProjectsPage = () => {
                   placeholder="Search projects by title, location, category..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 py-3 outline-none focus:border-amber-500"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-12 pr-4 py-3 outline-none focus:border-amber-500 dark:text-white"
                 />
               </div>
 
@@ -516,8 +513,8 @@ const AdminProjectsPage = () => {
                       onClick={() => setStatusFilter(filter.value)}
                       className={`rounded-full px-4 py-2 text-xs font-semibold transition sm:text-sm ${
                         isActive
-                          ? 'border border-amber-200 bg-amber-100 text-amber-900 shadow-sm'
-                          : 'border border-slate-200 bg-white text-slate-600 hover:border-amber-200 hover:bg-amber-50 hover:text-amber-800'
+                          ? 'border border-amber-200 dark:border-amber-700 bg-amber-100 dark:bg-amber-900/30 text-amber-900 dark:text-amber-400 shadow-sm'
+                          : 'border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-amber-200 dark:hover:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/20 hover:text-amber-800 dark:hover:text-amber-400'
                       }`}
                     >
                       {filter.label} ({count})
@@ -536,7 +533,7 @@ const AdminProjectsPage = () => {
             <>
               <div className="grid gap-4 md:grid-cols-2">
                 {paginatedProjects.map((project) => (
-              <div key={project._id} className="card-panel flex flex-col gap-3 px-6 py-4 cursor-pointer hover:shadow-lg transition bg-white" onClick={() => {
+              <div key={project._id} className="card-panel flex flex-col gap-3 px-6 py-4 cursor-pointer hover:shadow-lg transition bg-white dark:bg-slate-900" onClick={() => {
                 setSelectedProject(project)
                 setCurrentImageIndex(0)
               }}>
@@ -553,24 +550,24 @@ const AdminProjectsPage = () => {
                 </div>
                 <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-lg font-semibold text-slate-950">{project.title}</h3>
+                      <h3 className="text-lg font-semibold text-slate-950 dark:text-white">{project.title}</h3>
                       <StatusBadge status={project.status} />
                     </div>
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                       {project.category} • {project.location}
                     </p>
                     {project.completionDate ? (
-                      <p className="text-xs text-slate-500">Completion: {formatDate(project.completionDate)}</p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400">Completion: {formatDate(project.completionDate)}</p>
                     ) : null}
                 </div>
                 <div className="flex gap-3" onClick={(e) => e.stopPropagation()}>
-                  <button type="button" onClick={() => handleEdit(project)} className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600" title="Edit project">
+                  <button type="button" onClick={() => handleEdit(project)} className="rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 transition hover:border-amber-300 dark:hover:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:text-amber-600 dark:hover:text-amber-400" title="Edit project">
                     <Pencil size={16} />
                   </button>
                   <button
                     type="button"
                     onClick={() => handleDelete(project._id)}
-                    className="rounded-full border border-slate-200 p-2 text-slate-600 transition hover:border-rose-300 hover:bg-rose-50 hover:text-rose-600"
+                    className="rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 transition hover:border-rose-300 dark:hover:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-900/30 hover:text-rose-600 dark:hover:text-rose-400"
                     title="Delete project"
                   >
                     <Trash2 size={16} />
@@ -581,22 +578,22 @@ const AdminProjectsPage = () => {
               </div>
 
               {totalPages > 1 && (
-                <div className="flex items-center justify-between rounded-2xl border border-slate-200 px-6 py-4 bg-white">
-                  <span className="text-sm text-slate-600">
+                <div className="flex items-center justify-between rounded-2xl border border-slate-200 dark:border-slate-700 px-6 py-4 bg-white dark:bg-slate-900">
+                  <span className="text-sm text-slate-600 dark:text-slate-400">
                     Page {currentPage} of {totalPages}
                   </span>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="rounded-full border border-slate-200 p-2 text-slate-600 disabled:opacity-50 transition hover:bg-slate-50"
+                      className="rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 disabled:opacity-50 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                     >
                       <ChevronLeft size={18} />
                     </button>
                     <button
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className="rounded-full border border-slate-200 p-2 text-slate-600 disabled:opacity-50 transition hover:bg-slate-50"
+                      className="rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 disabled:opacity-50 transition hover:bg-slate-50 dark:hover:bg-slate-800"
                     >
                       <ChevronRight size={18} />
                     </button>
@@ -611,16 +608,16 @@ const AdminProjectsPage = () => {
       {/* Project Details Modal */}
       {selectedProject && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full my-8">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl max-w-2xl w-full my-8">
             {/* Modal Header */}
-            <div className="sticky top-0 bg-white border-b border-slate-200 rounded-t-3xl px-6 sm:px-8 py-4 sm:py-6 flex items-start justify-between gap-4">
+            <div className="sticky top-0 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 rounded-t-3xl px-6 sm:px-8 py-4 sm:py-6 flex items-start justify-between gap-4">
               <div className="flex-grow min-w-0">
-                <p className="text-xs font-medium text-slate-500">{selectedProject.category}</p>
-                <h2 className="mt-1 text-xl sm:text-2xl font-semibold text-slate-950 line-clamp-2">{selectedProject.title}</h2>
+                <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{selectedProject.category}</p>
+                <h2 className="mt-1 text-xl sm:text-2xl font-semibold text-slate-950 dark:text-white line-clamp-2">{selectedProject.title}</h2>
               </div>
               <button
                 onClick={() => setSelectedProject(null)}
-                className="flex-shrink-0 rounded-full border border-slate-200 p-2 text-slate-600 hover:bg-slate-50 transition"
+                className="flex-shrink-0 rounded-full border border-slate-200 dark:border-slate-700 p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
                 title="Close modal"
               >
                 <X size={20} />
@@ -695,15 +692,15 @@ const AdminProjectsPage = () => {
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-950 mb-2">Description</h3>
-                  <p className="text-sm leading-7 text-slate-600 whitespace-pre-wrap">
+                  <h3 className="text-sm font-semibold text-slate-950 dark:text-white mb-2">Description</h3>
+                  <p className="text-sm leading-7 text-slate-600 dark:text-slate-300 whitespace-pre-wrap">
                     {selectedProject.description}
                   </p>
                 </div>
                 {selectedProject.completionDate && (
                   <div>
-                    <p className="text-xs font-semibold text-slate-700">
-                      Completion Date: <span className="text-amber-700">{formatDate(selectedProject.completionDate)}</span>
+                    <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                      Completion Date: <span className="text-amber-700 dark:text-amber-400">{formatDate(selectedProject.completionDate)}</span>
                     </p>
                   </div>
                 )}
@@ -711,10 +708,10 @@ const AdminProjectsPage = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="border-t border-slate-200 rounded-b-3xl px-6 sm:px-8 py-4 bg-slate-50 flex justify-end gap-3">
+            <div className="border-t border-slate-200 dark:border-slate-700 rounded-b-3xl px-6 sm:px-8 py-4 bg-slate-50 dark:bg-slate-800/50 flex justify-end gap-3">
               <button
                 onClick={() => setSelectedProject(null)}
-                className="rounded-full border border-slate-200 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition"
+                className="rounded-full border border-slate-200 dark:border-slate-700 px-4 sm:px-5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
                 Close
               </button>

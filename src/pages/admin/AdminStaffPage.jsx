@@ -136,8 +136,8 @@ const AdminStaffPage = () => {
     <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h2 className="text-xl sm:text-2xl font-semibold text-slate-950">Manage Staff Members</h2>
-          <p className="mt-1 text-xs sm:text-sm text-slate-500">Add, edit, and remove team members with photos.</p>
+          <h2 className="text-xl sm:text-2xl font-semibold text-slate-950 dark:text-white">Manage Staff Members</h2>
+          <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">Add, edit, and remove team members with photos.</p>
         </div>
         <button
           type="button"
@@ -145,7 +145,7 @@ const AdminStaffPage = () => {
             resetStaffForm()
             setShowStaffForm(!showStaffForm)
           }}
-          className="rounded-full bg-slate-950 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-slate-800 whitespace-nowrap"
+          className="rounded-full bg-slate-950 dark:bg-amber-600 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:bg-slate-800 dark:hover:bg-amber-500 whitespace-nowrap"
         >
           {showStaffForm ? 'Cancel' : '+ Add Staff'}
         </button>
@@ -154,23 +154,23 @@ const AdminStaffPage = () => {
       {showStaffForm && (
         <form onSubmit={handleStaffSubmit} className="card-panel space-y-4 sm:space-y-5 px-4 sm:px-6 py-6">
           <div>
-            <h3 className="text-base sm:text-lg font-semibold text-slate-950">{editingStaffId ? 'Edit Staff Member' : 'Add New Staff Member'}</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-slate-950 dark:text-white">{editingStaffId ? 'Edit Staff Member' : 'Add New Staff Member'}</h3>
           </div>
 
           <div className="grid gap-3 sm:gap-4 md:gap-5 grid-cols-1 md:grid-cols-2">
             <label className="space-y-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-700">Full Name</span>
+              <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">Full Name</span>
               <input
                 type="text"
                 name="name"
                 value={staffForm.name}
                 onChange={handleStaffChange}
-                className="w-full rounded-2xl border border-slate-200 px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-amber-500"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-amber-500 bg-white dark:bg-slate-800 dark:text-white"
                 required
               />
             </label>
             <label className="space-y-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-700">Email Address</span>
+              <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">Email Address</span>
               <div className="relative">
                 <Mail size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
@@ -178,7 +178,7 @@ const AdminStaffPage = () => {
                   name="email"
                   value={staffForm.email}
                   onChange={handleStaffChange}
-                  className="w-full rounded-2xl border border-slate-200 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-amber-500 sm:px-4 sm:py-3 sm:pl-11"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-amber-500 sm:px-4 sm:py-3 sm:pl-11 bg-white dark:bg-slate-800 dark:text-white"
                   placeholder="name@company.com"
                 />
               </div>
@@ -187,18 +187,18 @@ const AdminStaffPage = () => {
 
           <div className="grid gap-3 sm:gap-4 md:gap-5 grid-cols-1 md:grid-cols-2">
             <label className="space-y-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-700">Title / Position</span>
+              <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">Title / Position</span>
               <input
                 type="text"
                 name="title"
                 value={staffForm.title}
                 onChange={handleStaffChange}
-                className="w-full rounded-2xl border border-slate-200 px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-amber-500"
+                className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-amber-500 bg-white dark:bg-slate-800 dark:text-white"
                 required
               />
             </label>
             <label className="space-y-2">
-              <span className="text-xs sm:text-sm font-medium text-slate-700">Phone Number</span>
+              <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">Phone Number</span>
               <div className="relative">
                 <Phone size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
@@ -206,7 +206,7 @@ const AdminStaffPage = () => {
                   name="phone"
                   value={staffForm.phone}
                   onChange={handleStaffChange}
-                  className="w-full rounded-2xl border border-slate-200 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-amber-500 sm:px-4 sm:py-3 sm:pl-11"
+                  className="w-full rounded-2xl border border-slate-200 dark:border-slate-700 py-2.5 pl-10 pr-3 text-sm outline-none focus:border-amber-500 sm:px-4 sm:py-3 sm:pl-11 bg-white dark:bg-slate-800 dark:text-white"
                   placeholder="+1 555 123 4567"
                 />
               </div>
@@ -214,26 +214,26 @@ const AdminStaffPage = () => {
           </div>
 
           <label className="block space-y-2">
-            <span className="text-xs sm:text-sm font-medium text-slate-700">Description / Bio</span>
+            <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">Description / Bio</span>
             <textarea
               name="description"
               value={staffForm.description}
               onChange={handleStaffChange}
               rows="3"
-              className="w-full rounded-3xl border border-slate-200 px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-amber-500"
+              className="w-full rounded-3xl border border-slate-200 dark:border-slate-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm outline-none focus:border-amber-500 bg-white dark:bg-slate-800 dark:text-white"
               required
             />
           </label>
 
           <label className="block space-y-2">
-            <span className="text-xs sm:text-sm font-medium text-slate-700">Staff Photo</span>
+            <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300">Staff Photo</span>
             <input
               type="file"
               accept="image/*"
               onChange={handleStaffPhotoChange}
-              className="w-full rounded-2xl border border-dashed border-slate-300 px-3 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm"
+              className="w-full rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 px-3 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm dark:text-slate-300"
             />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
               {staffForm.photo && !staffPhoto ? 'Current photo exists. Upload a new file to replace it.' : 'Select an image file to upload'}
             </p>
           </label>
@@ -251,7 +251,7 @@ const AdminStaffPage = () => {
           {staffFeedback.message ? (
             <div
               className={`rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm ${
-                staffFeedback.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'
+                staffFeedback.type === 'success' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' : 'bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400'
               }`}
             >
               {staffFeedback.message}
@@ -262,7 +262,7 @@ const AdminStaffPage = () => {
             <button
               type="submit"
               disabled={savingStaff}
-              className="rounded-full bg-slate-950 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70 whitespace-nowrap"
+              className="rounded-full bg-slate-950 dark:bg-amber-600 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70 whitespace-nowrap dark:hover:bg-amber-500"
             >
               {savingStaff ? 'Saving...' : editingStaffId ? 'Update Staff' : 'Add Staff'}
             </button>
@@ -270,7 +270,7 @@ const AdminStaffPage = () => {
               <button
                 type="button"
                 onClick={resetStaffForm}
-                className="rounded-full border border-slate-200 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold transition hover:bg-slate-50"
+                className="rounded-full border border-slate-200 dark:border-slate-700 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold transition hover:bg-slate-50 dark:hover:bg-slate-800 dark:text-slate-300"
               >
                 Cancel Edit
               </button>
@@ -285,8 +285,8 @@ const AdminStaffPage = () => {
         <>
           <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {staff.map((member) => (
-              <div key={member._id} className="card-panel overflow-hidden flex flex-col border border-slate-200">
-                <div className="h-24 sm:h-28 lg:h-32 w-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center flex-shrink-0">
+              <div key={member._id} className="card-panel overflow-hidden flex flex-col border border-slate-200 dark:border-slate-700">
+                <div className="h-24 sm:h-28 lg:h-32 w-full bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-600 flex items-center justify-center flex-shrink-0">
                   {member.photo ? (
                     <img src={member.photo} alt={member.name} className="h-full w-full object-cover object-top" />
                   ) : (
@@ -294,27 +294,27 @@ const AdminStaffPage = () => {
                   )}
                 </div>
                 <div className="px-3 sm:px-4 py-3 sm:py-4 flex-grow flex flex-col">
-                  <h3 className="text-sm sm:text-base font-semibold text-slate-950 line-clamp-2">{member.name}</h3>
-                  <p className="text-xs font-medium text-amber-700 mt-1">{member.title}</p>
-                  <p className="text-xs text-slate-600 leading-4 sm:leading-5 mt-1.5 sm:mt-2 line-clamp-2">{member.description}</p>
+                  <h3 className="text-sm sm:text-base font-semibold text-slate-950 dark:text-white line-clamp-2">{member.name}</h3>
+                  <p className="text-xs font-medium text-amber-700 dark:text-amber-400 mt-1">{member.title}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 leading-4 sm:leading-5 mt-1.5 sm:mt-2 line-clamp-2">{member.description}</p>
                   {member.email ? (
-                    <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-slate-500 break-all">
+                    <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 break-all">
                       <Mail size={12} className="flex-shrink-0" />
                       <span>{member.email}</span>
                     </p>
                   ) : null}
                   {member.phone ? (
-                    <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-slate-500">
+                    <p className="mt-1 inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
                       <Phone size={12} className="flex-shrink-0" />
                       <span>{member.phone}</span>
                     </p>
                   ) : null}
                 </div>
-                <div className="flex gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border-t border-slate-200">
+                <div className="flex gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border-t border-slate-200 dark:border-slate-700">
                   <button
                     type="button"
                     onClick={() => handleEditStaff(member)}
-                    className="rounded-full border border-slate-200 p-1.5 sm:p-2 text-slate-600 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-600 flex-1 flex items-center justify-center"
+                    className="rounded-full border border-slate-200 dark:border-slate-700 p-1.5 sm:p-2 text-slate-600 dark:text-slate-400 transition hover:border-amber-300 dark:hover:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-900/30 hover:text-amber-600 dark:hover:text-amber-400 flex-1 flex items-center justify-center"
                     title="Edit staff member"
                   >
                     <Pencil size={14} />
@@ -322,7 +322,7 @@ const AdminStaffPage = () => {
                   <button
                     type="button"
                     onClick={() => handleDeleteStaff(member._id)}
-                    className="rounded-full border border-slate-200 p-1.5 sm:p-2 text-slate-600 transition hover:border-rose-300 hover:bg-rose-50 hover:text-rose-600 flex-1 flex items-center justify-center"
+                    className="rounded-full border border-slate-200 dark:border-slate-700 p-1.5 sm:p-2 text-slate-600 dark:text-slate-400 transition hover:border-rose-300 dark:hover:border-rose-700 hover:bg-rose-50 dark:hover:bg-rose-900/30 hover:text-rose-600 dark:hover:text-rose-400 flex-1 flex items-center justify-center"
                     title="Delete staff member"
                   >
                     <Trash2 size={14} />

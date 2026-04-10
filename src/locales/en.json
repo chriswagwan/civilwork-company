@@ -22,7 +22,12 @@
     "point3": "High-quality workmanship with strong HSE controls",
     "what_we_do": "What We Do",
     "what_we_do_title": "Civil works services built around performance on site",
-    "what_we_do_copy": "From earthworks and road construction to structural building delivery and drainage packages, our teams are set up for safe, high-quality execution."
+    "what_we_do_copy": "From earthworks and road construction to structural building delivery and drainage packages, our teams are set up for safe, high-quality execution.",
+    "get_quote": "Get Quote",
+    "featured_eyebrow": "Featured Work",
+    "featured_title": "Recent projects shaping better infrastructure",
+    "featured_copy": "A snapshot of the transport, building, and utility projects currently in our portfolio.",
+    "see_portfolio": "See full portfolio"
   },
   "services": {
     "eyebrow": "Services",
