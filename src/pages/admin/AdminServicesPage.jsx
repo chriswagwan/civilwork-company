@@ -1,4 +1,4 @@
-import { Search, Trash2, ChevronLeft, ChevronRight, Pencil } from 'lucide-react'
+import { Search, Trash2, ChevronLeft, ChevronRight, Pencil, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import client from '../../api/client.js'
 import EmptyState from '../../components/common/EmptyState.jsx'
@@ -21,6 +21,7 @@ const AdminServicesPage = () => {
   const [success, setSuccess] = useState('')
   const [showForm, setShowForm] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+  const [notification, setNotification] = useState({ show: false, message: '', type: 'info' })
   const itemsPerPage = 4
 
   const loadServices = async () => {
@@ -68,7 +69,6 @@ const AdminServicesPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     setError('')
-    setSuccess('')
 
     const payload = {
       name: form.name,
@@ -81,6 +81,7 @@ const AdminServicesPage = () => {
     }
 
     try {
+      const isUpdating = !!editingId
       if (editingId) {
         await client.put(`/services/${editingId}`, payload)
       } else {
@@ -88,11 +89,19 @@ const AdminServicesPage = () => {
       }
 
       await loadServices()
-      const actionMessage = editingId ? 'Service updated successfully.' : 'Service created successfully.'
+      const actionMessage = isUpdating ? '✓ Service updated successfully' : '✓ Service created successfully'
       resetForm()
-      setSuccess(actionMessage)
+      setNotification({ show: true, message: actionMessage, type: 'success' })
+      setTimeout(() => {
+        setNotification({ show: false, message: '', type: 'info' })
+      }, 3000)
     } catch (requestError) {
-      setError(requestError.response?.data?.message || 'Unable to save service.')
+      const errorMessage = requestError.response?.data?.message || 'Unable to save service.'
+      setError(errorMessage)
+      setNotification({ show: true, message: `✗ ${errorMessage}`, type: 'error' })
+      setTimeout(() => {
+        setNotification({ show: false, message: '', type: 'info' })
+      }, 3000)
     }
   }
 
@@ -108,10 +117,24 @@ const AdminServicesPage = () => {
   }
 
   const handleDelete = async (serviceId) => {
-    await client.delete(`/services/${serviceId}`)
-    await loadServices()
-    if (editingId === serviceId) resetForm()
+    if (!window.confirm('Are you sure you want to delete this service?')) return
+    try {
+      await client.delete(`/services/${serviceId}`)
+      await loadServices()
+      if (editingId === serviceId) resetForm()
+      setNotification({ show: true, message: '✓ Service deleted successfully', type: 'success' })
+      setTimeout(() => {
+        setNotification({ show: false, message: '', type: 'info' })
+      }, 3000)
+    } catch {
+      setNotification({ show: true, message: '✗ Failed to delete service', type: 'error' })
+      setTimeout(() => {
+        setNotification({ show: false, message: '', type: 'info' })
+      }, 3000)
+    }
   }
+
+
 
   const totalPages = Math.ceil(filteredServices.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
@@ -209,7 +232,6 @@ const AdminServicesPage = () => {
         </label>
 
         {error ? <div className="rounded-2xl bg-rose-50 dark:bg-rose-900/30 px-4 py-3 text-sm text-rose-700 dark:text-rose-400">{error}</div> : null}
-        {success ? <div className="rounded-2xl bg-emerald-50 dark:bg-emerald-900/30 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400">{success}</div> : null}
 
         <button type="submit" className="rounded-full bg-slate-950 dark:bg-amber-600 px-5 py-3 text-sm font-semibold text-white dark:hover:bg-amber-500">
           {editingId ? 'Update Service' : 'Create Service'}
@@ -297,6 +319,31 @@ const AdminServicesPage = () => {
             </>
           )}
         </>
+      )}
+
+      {/* Notification */}
+      {notification.show && (
+        <div className="fixed bottom-4 right-4 z-50 max-w-sm w-full sm:w-96 animate-in fade-in slide-in-from-bottom-4 duration-300">
+          <div className={`rounded-2xl px-6 py-4 shadow-lg border ${
+            notification.type === 'success' 
+              ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700 text-emerald-800 dark:text-emerald-400' 
+              : notification.type === 'error'
+              ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-700 text-rose-800 dark:text-rose-400'
+              : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-400'
+          }`}>
+            <div className="flex items-start gap-3">
+              <div className="flex-grow">
+                <p className="text-sm font-medium">{notification.message}</p>
+              </div>
+              <button
+                onClick={() => setNotification({ show: false, message: '', type: 'info' })}
+                className="flex-shrink-0 text-opacity-70 hover:text-opacity-100 transition"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

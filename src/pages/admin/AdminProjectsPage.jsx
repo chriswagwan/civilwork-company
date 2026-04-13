@@ -247,6 +247,7 @@ const AdminProjectsPage = () => {
     showToast('success', 'Project deleted successfully.')
   }
 
+
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
@@ -533,7 +534,10 @@ const AdminProjectsPage = () => {
             <>
               <div className="grid gap-4 md:grid-cols-2">
                 {paginatedProjects.map((project) => (
-              <div key={project._id} className="card-panel flex flex-col gap-3 px-6 py-4 cursor-pointer hover:shadow-lg transition bg-white dark:bg-slate-900" onClick={() => {
+              <div
+                key={project._id}
+                className="card-panel flex flex-col gap-3 px-6 py-4 cursor-pointer transition bg-white dark:bg-slate-900 hover:shadow-lg"
+                onClick={() => {
                 setSelectedProject(project)
                 setCurrentImageIndex(0)
               }}>

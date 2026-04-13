@@ -12,7 +12,7 @@ import { t } from '../utils/translations.js'
 const initialForm = {
   name: '',
   email: '',
-  phoneCountryCode: '',
+  phoneCountryCode: '+250',
   phone: '',
   subject: '',
   message: '',

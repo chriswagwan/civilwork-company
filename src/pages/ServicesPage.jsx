@@ -4,7 +4,6 @@ import client from '../api/client.js'
 import EmptyState from '../components/common/EmptyState.jsx'
 import LoadingSpinner from '../components/common/LoadingSpinner.jsx'
 import PageHero from '../components/layout/PageHero.jsx'
-import { truncateText } from '../utils/formatters.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { t } from '../utils/translations.js'
 
@@ -69,7 +68,7 @@ const ServicesPage = () => {
                       <Icon size={20} />
                     </div>
                     <h3 className="mt-4 sm:mt-5 text-base sm:text-xl font-semibold text-slate-900 dark:text-white">{service.name}</h3>
-                    <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-6 sm:leading-7 text-slate-600 dark:text-slate-400">{truncateText(service.description, 120)}</p>
+                    <p className="mt-2 sm:mt-3 text-xs sm:text-sm leading-6 sm:leading-7 text-slate-600 dark:text-slate-400">{service.description}</p>
                   </article>
                 )
               })}
@@ -92,9 +91,8 @@ const ServicesPage = () => {
                   >
                     <ChevronLeft size={20} />
                   </button>
-                  <div className="flex flex-col items-center min-w-[3rem]">
+                  <div className="flex items-center min-w-[3rem]">
                     <span className="text-sm font-bold text-slate-950 dark:text-white">{currentPage}</span>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 dark:text-slate-500 tracking-tighter">Page</span>
                   </div>
                   <button
                     onClick={() => {

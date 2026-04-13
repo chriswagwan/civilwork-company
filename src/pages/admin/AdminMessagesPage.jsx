@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ChevronLeft, ChevronRight, MessageCircle, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MessageCircle, X, Trash2 } from 'lucide-react'
 import client from '../../api/client.js'
 import EmptyState from '../../components/common/EmptyState.jsx'
 import LoadingSpinner from '../../components/common/LoadingSpinner.jsx'
@@ -104,6 +104,24 @@ const AdminMessagesPage = () => {
       setTimeout(() => {
         setNotification({ show: false, message: '', type: 'info' })
       }, 3000)
+    }
+  }
+
+  const deleteMessage = async (messageId) => {
+    if (!window.confirm('Are you sure you want to delete this message?')) return;
+    try {
+      await client.delete(`/messages/${messageId}`);
+      setMessages((prev) => prev.filter((msg) => msg._id !== messageId));
+      setSelectedMessage(null);
+      setNotification({ show: true, message: '✓ Message deleted', type: 'success' });
+      setTimeout(() => {
+        setNotification({ show: false, message: '', type: 'info' });
+      }, 3000);
+    } catch {
+      setNotification({ show: true, message: '✗ Failed to delete message', type: 'error' });
+      setTimeout(() => {
+        setNotification({ show: false, message: '', type: 'info' });
+      }, 3000);
     }
   }
 
@@ -218,9 +236,18 @@ const AdminMessagesPage = () => {
           copy={statusFilter === 'read' ? 'Messages marked as read will appear here.' : 'New incoming messages will appear here until they are marked as read.'}
         />
       ) : (
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 w-full max-w-full overflow-x-hidden md:grid-cols-2">
         {paginatedMessages.map((message) => (
-          <div key={message._id} className="card-panel flex flex-col gap-3 px-6 py-4">
+          <div key={message._id} className="card-panel flex flex-col gap-3 px-2 sm:px-4 py-4 w-full max-w-full overflow-x-hidden relative">
+                        {/* Delete Icon */}
+                        <button
+                          type="button"
+                          onClick={() => deleteMessage(message._id)}
+                          className="absolute top-2 right-2 p-1 rounded-full hover:bg-rose-100 dark:hover:bg-rose-900/30 text-rose-600 dark:text-rose-400"
+                          title="Delete message"
+                        >
+                          <Trash2 size={18} />
+                        </button>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
@@ -241,7 +268,7 @@ const AdminMessagesPage = () => {
               </div>
             </div>
             {message.subject ? <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">{message.subject}</p> : null}
-            <p className="text-sm leading-6 text-slate-600 dark:text-slate-400 line-clamp-2">{message.message}</p>
+            <p className="text-sm leading-6 text-slate-600 dark:text-slate-400 line-clamp-2 break-words overflow-hidden">{message.message}</p>
             <div className="flex flex-wrap gap-2">
               <button
                 type="button"
@@ -447,10 +474,10 @@ const AdminMessagesPage = () => {
         <div className="fixed bottom-4 right-4 z-50 max-w-sm w-full sm:w-96 animate-in fade-in slide-in-from-bottom-4 duration-300">
           <div className={`rounded-2xl px-6 py-4 shadow-lg border ${
             notification.type === 'success' 
-              ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+              ? 'bg-emerald-50 dark:bg-emerald-900/20 border-emerald-200 dark:border-emerald-700 text-emerald-800 dark:text-emerald-400' 
               : notification.type === 'error'
-              ? 'bg-rose-50 border-rose-200 text-rose-800'
-              : 'bg-blue-50 border-blue-200 text-blue-800'
+              ? 'bg-rose-50 dark:bg-rose-900/20 border-rose-200 dark:border-rose-700 text-rose-800 dark:text-rose-400'
+              : 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-700 text-blue-800 dark:text-blue-400'
           }`}>
             <div className="flex items-start gap-3">
               <div className="flex-grow">
